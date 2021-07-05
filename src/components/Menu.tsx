@@ -10,7 +10,7 @@ import {
   IonNote,
 } from "@ionic/react"
 
-import { useLocation } from "react-router-dom"
+import { useLocation, useHistory } from "react-router-dom"
 import {
   archiveOutline,
   archiveSharp,
@@ -31,13 +31,15 @@ import {
   listSharp,
   settingsOutline,
   settingsSharp,
-  logInSharp,
-  logInOutline,
   personOutline,
   personSharp,
+  logOutOutline,
+  logOutSharp,
 } from "ionicons/icons"
 import "./Menu.css"
 import { userInfo } from "os"
+
+import { doSignout } from "../actions/authActions"
 
 import { connect } from "react-redux"
 
@@ -76,20 +78,21 @@ const bottomAppPages: AppPage[] = [
     iosIcon: settingsOutline,
     mdIcon: settingsSharp,
   },
-  {
-    title: "Logout",
-    url: "/page/logout",
-    iosIcon: logInOutline,
-    mdIcon: logInSharp,
-  },
 ]
 
 type Props = {
   user: any
+  dispatch
 }
 
-const Menu: React.FC<Props> = ({ user }) => {
+const Menu: React.FC<Props> = ({ dispatch, user }) => {
   const location = useLocation()
+  const history = useHistory()
+
+  async function handleSignout() {
+    await dispatch(doSignout())
+    history.push("/login")
+  }
 
   return (
     <IonMenu contentId="main" type="overlay">
@@ -122,28 +125,36 @@ const Menu: React.FC<Props> = ({ user }) => {
         </IonList>
 
         <IonList id="labels-list">
-          {bottomAppPages.map((appPage, index) => {
-            return (
-              <IonMenuToggle key={index} autoHide={false}>
-                <IonItem
-                  className={
-                    location.pathname === appPage.url ? "selected" : ""
-                  }
-                  routerLink={appPage.url}
-                  routerDirection="none"
-                  lines="none"
-                  detail={false}
-                >
-                  <IonIcon
-                    slot="start"
-                    ios={appPage.iosIcon}
-                    md={appPage.mdIcon}
-                  />
-                  <IonLabel>{appPage.title}</IonLabel>
-                </IonItem>
-              </IonMenuToggle>
-            )
-          })}
+          <IonMenuToggle autoHide={false}>
+            <IonItem
+              routerLink="/page/account"
+              routerDirection="none"
+              className={
+                location.pathname === "/page/account" ? "selected" : null
+              }
+              detail={false}
+              lines="none"
+            >
+              <IonIcon slot="start" ios={personOutline} md={personSharp} />
+              <IonLabel>Account</IonLabel>
+            </IonItem>
+            <IonItem
+              routerLink="/page/settings"
+              routerDirection="none"
+              className={
+                location.pathname === "/page/settings" ? "selected" : null
+              }
+              detail={false}
+              lines="none"
+            >
+              <IonIcon slot="start" ios={settingsOutline} md={settingsSharp} />
+              <IonLabel>Settings</IonLabel>
+            </IonItem>
+            <IonItem detail={false} lines="none" onClick={handleSignout}>
+              <IonIcon slot="start" ios={logOutOutline} md={logOutSharp} />
+              <IonLabel>Logout</IonLabel>
+            </IonItem>
+          </IonMenuToggle>
         </IonList>
       </IonContent>
     </IonMenu>

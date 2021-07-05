@@ -1,7 +1,8 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useHistory } from "react-router-dom"
 import {
   IonButton,
+  IonCheckbox,
   IonText,
   IonContent,
   IonInput,
@@ -21,25 +22,55 @@ type Props = {
   user: any
   loading: boolean
   hasErrors: boolean
+  error: { message: string }
   dispatch
 }
 
-const Login: React.FC<Props> = ({ dispatch, user, loading, hasErrors }) => {
+const Login: React.FC<Props> = ({
+  dispatch,
+  user,
+  loading,
+  hasErrors,
+  error,
+}) => {
   const history = useHistory()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [checkbox, setCheckbox] = useState(false)
+  const [validationError, setValidationError] = useState("")
 
-  async function handleSignin() {
-    await dispatch(
-      doSignin({
-        email,
-        password,
-      })
-    )
-
-    if (!hasErrors) {
+  useEffect(() => {
+    if (user) {
       history.push("/")
     }
+  })
+
+  function clearState() {
+    setEmail("")
+    setPassword("")
+    setValidationError("")
+  }
+
+  async function handleSignin() {
+    if (!email) {
+      return setValidationError("Email required")
+    }
+
+    if (!password) {
+      return setValidationError("Password required")
+    }
+
+    await dispatch(
+      doSignin(
+        {
+          email,
+          password,
+        },
+        checkbox
+      )
+    )
+
+    clearState()
   }
 
   return (
@@ -70,8 +101,31 @@ const Login: React.FC<Props> = ({ dispatch, user, loading, hasErrors }) => {
               onIonChange={(e) => setPassword(e.detail.value!)}
             ></IonInput>
           </IonItem>
+
+          {error ? (
+            <IonText className="ion-padding-start" color="danger">
+              <small>{error.message}</small>
+            </IonText>
+          ) : null}
+
+          {validationError ? (
+            <IonText className="ion-padding-start" color="danger">
+              <small>{validationError}</small>
+            </IonText>
+          ) : null}
         </IonList>
-        <IonButton shape="round" expand="full">
+        <IonCheckbox
+          checked={checkbox}
+          onIonChange={() => setCheckbox(!checkbox)}
+          className="ion-margin-start"
+        />
+        <small style={{ marginLeft: "10px" }}>Keep me signed in</small>
+        <IonButton
+          style={{ marginTop: "10px" }}
+          onClick={handleSignin}
+          shape="round"
+          expand="full"
+        >
           Login
         </IonButton>
         <div className="ion-margin-top ion-text-center">
@@ -89,6 +143,7 @@ const mapStateToProps = (state) => ({
   user: state.user.user,
   loading: state.user.loading,
   hasErrors: state.user.hasErrors,
+  error: state.user.error,
 })
 
 export default connect(mapStateToProps)(Login)

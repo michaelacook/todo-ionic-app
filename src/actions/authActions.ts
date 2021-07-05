@@ -1,5 +1,5 @@
 import { Action, User } from "../types"
-import { POST } from "../lib/http"
+import { GET, POST } from "../lib/http"
 import API from "../api"
 
 export const SIGN_IN = "SIGN_IN"
@@ -19,8 +19,9 @@ export const signinSuccess = (user: User): Action => ({
   payload: user,
 })
 
-export const signinFail = (): Action => ({
+export const signinFail = (err): Action => ({
   type: SIGN_IN_FAIL,
+  payload: err,
 })
 
 export const signout = (): Action => ({
@@ -36,8 +37,9 @@ export const createAccountSuccess = (user: User): Action => ({
   payload: user,
 })
 
-export const createAccountFail = (): Action => ({
+export const createAccountFail = (err): Action => ({
   type: CREATE_ACCOUNT_FAIL,
+  payload: err,
 })
 
 export function doCreateAccount(data: User) {
@@ -46,32 +48,51 @@ export function doCreateAccount(data: User) {
 
     try {
       const response = await POST(`${API}/users`, data)
-      console.log(response)
 
       const resData = await response.json()
-      dispatch(createAccountSuccess(resData))
+
+      if (response.status !== 201) {
+        dispatch(createAccountFail(resData))
+      } else {
+        dispatch(createAccountSuccess(resData))
+      }
     } catch (err) {
-      console.log(err)
-      dispatch(createAccountFail())
+      dispatch(createAccountFail(err))
     }
   }
 }
 
-export function doSignin(data: User) {
-  return async (dispatch: any) => {
+export function doSignin(data: User, cache = false) {
+  return async (dispatch) => {
     dispatch(signin())
 
     try {
-      const response = await POST(`${API}/users/auth/${data.email}`, data, {
+      const response = await GET(`${API}/users/auth/${data.email}`, {
         emailAddress: data.email,
         password: data.password,
       })
 
       const resData = await response.json()
-      dispatch(signinSuccess(resData))
+
+      if (cache) {
+        localStorage.setItem("user", JSON.stringify(resData))
+      }
+
+      if (response.status !== 200) {
+        dispatch(signinFail(resData))
+      } else {
+        dispatch(signinSuccess(resData))
+      }
     } catch (err) {
-      console.log(err)
-      dispatch(signinFail())
+      dispatch(signinFail(err))
     }
+  }
+}
+
+export function doSignout() {
+  localStorage.clear()
+
+  return async (dispatch) => {
+    dispatch(signout())
   }
 }

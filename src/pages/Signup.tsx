@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useHistory } from "react-router-dom"
 import {
   IonButton,
@@ -21,29 +21,71 @@ import { doCreateAccount } from "../actions/authActions"
 interface Props {
   user: any
   hasErrors: boolean
+  error: { message: string }
   loading: boolean
   dispatch: any
 }
 
-const Signup: React.FC<Props> = ({ dispatch, loading, hasErrors, user }) => {
+const Signup: React.FC<Props> = ({
+  dispatch,
+  loading,
+  hasErrors,
+  error,
+  user,
+}) => {
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPass, setConfirmPass] = useState("")
-  const [errors, setErrors] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPass: "",
-  })
+  const [emailErr, setEmailErr] = useState("")
+  const [passwordErr, setPasswordErr] = useState("")
+  const [confirmPassErr, setConfirmPassErr] = useState("")
+  const [passMatchErr, setPassMatchErr] = useState("")
+
+  function clearErrors() {
+    setEmailErr("")
+    setPasswordErr("")
+    setConfirmPassErr("")
+    setPassMatchErr("")
+  }
 
   const history = useHistory()
 
+  useEffect(() => {
+    if (user) {
+      history.push("/")
+    }
+  })
+
   async function handleCreateAccount() {
-    if (!email || !firstName || !password || !confirmPass) return
-    if (password !== confirmPass) return
+    clearErrors()
+
+    let hasErrors = false
+
+    if (!email) {
+      hasErrors = true
+      setEmailErr("Email required")
+    }
+
+    if (!password) {
+      hasErrors = true
+      setPasswordErr("Password required")
+    }
+
+    if (!confirmPass) {
+      hasErrors = true
+      setConfirmPassErr("Must confirm password")
+    }
+
+    if (confirmPass !== password) {
+      hasErrors = true
+      setConfirmPassErr("Password does not match confirmation")
+    }
+
+    if (hasErrors) {
+      return null
+    }
 
     await dispatch(
       doCreateAccount({
@@ -53,10 +95,6 @@ const Signup: React.FC<Props> = ({ dispatch, loading, hasErrors, user }) => {
         password,
       })
     )
-
-    if (!hasErrors) {
-      history.push("/")
-    }
   }
 
   return (
@@ -85,14 +123,7 @@ const Signup: React.FC<Props> = ({ dispatch, loading, hasErrors, user }) => {
               placeholder="First name"
             ></IonInput>
           </IonItem>
-          <IonText
-            className={`${
-              errors.firstName ? null : "ion-hide"
-            } ion-padding-start`}
-            color="danger"
-          >
-            <small>{errors.firstName}</small>
-          </IonText>
+
           <IonItem>
             <IonInput
               value={lastName}
@@ -101,14 +132,6 @@ const Signup: React.FC<Props> = ({ dispatch, loading, hasErrors, user }) => {
               placeholder="Last name"
             ></IonInput>
           </IonItem>
-          <IonText
-            className={`${
-              errors.lastName ? null : "ion-hide "
-            }ion-padding-start`}
-            color="danger"
-          >
-            <small>{errors.lastName}</small>
-          </IonText>
           <IonItem>
             <IonInput
               value={email}
@@ -118,43 +141,46 @@ const Signup: React.FC<Props> = ({ dispatch, loading, hasErrors, user }) => {
             />
           </IonItem>
           <IonText
-            className={`${errors.email ? null : "ion-hide "}ion-padding-start`}
+            className={`${emailErr ? null : "ion-hide"} ion-padding-start`}
             color="danger"
           >
-            <small>{errors.email}</small>
+            <small>{emailErr}</small>
           </IonText>
           <IonItem>
             <IonInput
               value={password}
               onIonChange={(e) => setPassword(e.detail.value!)}
               type="password"
-              placeholder="password"
+              placeholder="Password"
             ></IonInput>
           </IonItem>
           <IonText
-            className={`${
-              errors.password ? null : "ion-hide "
-            }ion-padding-start`}
+            className={`${passwordErr ? null : "ion-hide"} ion-padding-start`}
             color="danger"
           >
-            <small>{errors.password}</small>
+            <small>{passwordErr}</small>
           </IonText>
           <IonItem>
             <IonInput
               value={confirmPass}
               onIonChange={(e) => setConfirmPass(e.detail.value!)}
               type="password"
-              placeholder="confirm password"
+              placeholder="Confirm password"
             ></IonInput>
           </IonItem>
           <IonText
             className={`${
-              errors.confirmPass ? null : "ion-hide "
-            }ion-padding-start`}
+              confirmPassErr ? null : "ion-hide"
+            } ion-padding-start`}
             color="danger"
           >
-            <small>{errors.confirmPass}</small>
+            <small>{confirmPassErr}</small>
           </IonText>
+          {error ? (
+            <IonText className="ion-padding-start" color="danger">
+              <small>{error.message}</small>
+            </IonText>
+          ) : null}
         </IonList>
         <IonButton shape="round" onClick={handleCreateAccount} expand="full">
           Sign Up
@@ -174,6 +200,7 @@ const mapStateToProps = (state: Props) => ({
   loading: state.user.loading,
   hasErrors: state.user.hasErrors,
   user: state.user.user,
+  error: state.user.error,
 })
 
 export default connect(mapStateToProps)(Signup)
