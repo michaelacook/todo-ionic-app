@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { Redirect } from "react-router-dom"
 
 type Props = {
@@ -7,7 +7,7 @@ type Props = {
 
 const PrivateComponent: React.FC<Props> = (props) => {
   return !props.user.user ? (
-    <Redirect exact={true} to="/signup" />
+    <Redirect exact={true} to="/login" />
   ) : (
     <React.Fragment>{props.children}</React.Fragment>
   )

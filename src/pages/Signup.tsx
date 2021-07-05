@@ -68,6 +68,11 @@ const Signup: React.FC<Props> = ({
       setEmailErr("Email required")
     }
 
+    if (email && !/\S+@\S+\.\S+/.test(email)) {
+      hasErrors = true
+      setEmailErr("Please provide a valid email")
+    }
+
     if (!password) {
       hasErrors = true
       setPasswordErr("Password required")

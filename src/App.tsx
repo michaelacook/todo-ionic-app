@@ -6,6 +6,8 @@ import Page from "./pages/Page"
 import Signup from "./pages/Signup"
 import Login from "./pages/Login"
 
+import PrivateComponent from "./components/PrivateComponent"
+
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css"
 
@@ -35,17 +37,20 @@ const App: React.FC<Props> = ({ user }) => {
   return (
     <IonApp>
       <IonReactRouter>
-        <IonSplitPane contentId="main">
-          <Menu />
-          <IonRouterOutlet id="main">
-            <Route path="/" exact={true}>
-              <Redirect to="/page/Inbox" />
-            </Route>
-            <Route path="/page/:name" exact={true}>
-              <Page />
-            </Route>
-          </IonRouterOutlet>
-        </IonSplitPane>
+        <PrivateComponent user={user}>
+          <IonSplitPane contentId="main">
+            <Menu />
+            <IonRouterOutlet id="main">
+              <Route path="/" exact={true}>
+                <Redirect to="/page/Inbox" />
+              </Route>
+              <Route path="/page/:name" exact={true}>
+                <Page />
+              </Route>
+            </IonRouterOutlet>
+          </IonSplitPane>
+        </PrivateComponent>
+
         <Route exact={true} path="/login" component={Login} />
         <Route exact={true} path="/signup" component={Signup} />
       </IonReactRouter>
