@@ -80,7 +80,7 @@ const Signup: React.FC<Props> = ({
 
     if (confirmPass !== password) {
       hasErrors = true
-      setConfirmPassErr("Password does not match confirmation")
+      setPassMatchErr("Password does not match confirmation")
     }
 
     if (hasErrors) {
@@ -175,6 +175,12 @@ const Signup: React.FC<Props> = ({
             color="danger"
           >
             <small>{confirmPassErr}</small>
+          </IonText>
+          <IonText
+            className={`${passMatchErr ? null : "ion-hide"} ion-padding-start`}
+            color="danger"
+          >
+            <small>{passMatchErr}</small>
           </IonText>
           {error ? (
             <IonText className="ion-padding-start" color="danger">
