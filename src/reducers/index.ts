@@ -1,11 +1,11 @@
 import { combineReducers } from "redux"
 
 import authReducer from "./authReducer"
-import redirectReducer from "./redirectReducer"
+import categoryReducer from "./categoryReducer"
 
 const rootReducer = combineReducers({
   user: authReducer,
-  redirect: redirectReducer,
+  categories: categoryReducer,
 })
 
 export default rootReducer

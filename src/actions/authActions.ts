@@ -42,7 +42,7 @@ export const createAccountFail = (err): Action => ({
   payload: err,
 })
 
-export function doCreateAccount(data: User) {
+export function doCreateAccount(data: User, cache = false) {
   return async (dispatch) => {
     dispatch(createAccount())
 
@@ -50,11 +50,16 @@ export function doCreateAccount(data: User) {
       const response = await POST(`${API}/users`, data)
 
       const resData = await response.json()
+      resData.rawPass = data.password
 
       if (response.status !== 201) {
         dispatch(createAccountFail(resData))
       } else {
         dispatch(createAccountSuccess(resData))
+
+        if (cache) {
+          localStorage.setItem("user", JSON.stringify(resData))
+        }
       }
     } catch (err) {
       dispatch(createAccountFail(err))
@@ -73,15 +78,16 @@ export function doSignin(data: User, cache = false) {
       })
 
       const resData = await response.json()
-
-      if (cache) {
-        localStorage.setItem("user", JSON.stringify(resData))
-      }
+      resData.rawPass = data.password
 
       if (response.status !== 200) {
         dispatch(signinFail(resData))
       } else {
         dispatch(signinSuccess(resData))
+
+        if (cache) {
+          localStorage.setItem("user", JSON.stringify(resData))
+        }
       }
     } catch (err) {
       dispatch(signinFail(err))

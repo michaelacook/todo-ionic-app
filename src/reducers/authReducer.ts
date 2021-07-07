@@ -15,7 +15,12 @@ export default function authReducer(state = initialState, action: Action) {
     case actions.CREATE_ACCOUNT:
       return { ...state, loading: true, hasErrors: false }
     case actions.CREATE_ACCOUNT_SUCCESS:
-      return { user: action.payload, loading: false, hasErrors: false }
+      return {
+        ...state,
+        user: action.payload,
+        loading: false,
+        hasErrors: false,
+      }
     case actions.CREATE_ACCOUNT_FAIL:
       return {
         ...state,
@@ -27,19 +32,21 @@ export default function authReducer(state = initialState, action: Action) {
       return { ...state, loading: true, hasErrors: false }
     case actions.SIGN_IN_SUCCESS:
       return {
+        ...state,
         user: action.payload,
         loading: false,
         hasErrors: false,
       }
     case actions.SIGN_IN_FAIL:
       return {
+        ...state,
         user: null,
         loading: false,
         hasErrors: true,
         error: action.payload,
       }
     case actions.SIGN_OUT:
-      return { user: null, loading: false, hasErrors: false }
+      return { ...state, user: null, loading: false, hasErrors: false }
     default:
       return state
   }

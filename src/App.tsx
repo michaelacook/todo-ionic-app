@@ -5,6 +5,7 @@ import Menu from "./components/Menu"
 import Page from "./pages/Page"
 import Signup from "./pages/Signup"
 import Login from "./pages/Login"
+import Categories from "./pages/Categories"
 
 import PrivateComponent from "./components/PrivateComponent"
 
@@ -41,16 +42,14 @@ const App: React.FC<Props> = ({ user }) => {
           <IonSplitPane contentId="main">
             <Menu />
             <IonRouterOutlet id="main">
-              <Route path="/" exact={true}>
-                <Redirect to="/page/Inbox" />
-              </Route>
-              <Route path="/page/:name" exact={true}>
-                <Page />
-              </Route>
+              <Route
+                path="/page/categories"
+                exact={true}
+                component={Categories}
+              />
             </IonRouterOutlet>
           </IonSplitPane>
         </PrivateComponent>
-
         <Route exact={true} path="/login" component={Login} />
         <Route exact={true} path="/signup" component={Signup} />
       </IonReactRouter>
