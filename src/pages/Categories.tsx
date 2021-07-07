@@ -10,12 +10,19 @@ import {
   IonToolbar,
 } from "@ionic/react"
 
+import { doFetchCategories } from "../actions/categoryActions"
+
 type Props = {
+  user
   categories
   dispatch
 }
 
-const Categories: React.FC<Props> = ({ dispatch, categories }) => {
+const Categories: React.FC<Props> = ({ dispatch, user, categories }) => {
+  useEffect(() => {
+    dispatch(doFetchCategories(user.email, user.rawPass))
+  }, [])
+
   return (
     <IonPage>
       <IonHeader>
@@ -31,6 +38,7 @@ const Categories: React.FC<Props> = ({ dispatch, categories }) => {
 }
 
 const mapStateToProps = (state) => ({
+  user: state.user.user,
   categories: state.categories.categories,
 })
 
