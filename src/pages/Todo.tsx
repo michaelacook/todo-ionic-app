@@ -27,6 +27,7 @@ import { trash, menuSharp, createSharp } from "ionicons/icons"
 
 const Todo: React.FC = () => {
   const history = useHistory()
+  const [title, setTitle] = useState("")
   const [items, setItems] = useState([])
   const [newItem, setNewItem] = useState("")
   const [newItemComment, setNewItemComment] = useState("")
@@ -42,8 +43,9 @@ const Todo: React.FC = () => {
 
   useEffect(() => {
     if (history.location.state) {
-      const { ListItems }: any = history.location.state
+      const { ListItems, title }: any = history.location.state
       setItems(ListItems)
+      setTitle(title)
     }
   }, [])
 
@@ -59,7 +61,7 @@ const Todo: React.FC = () => {
             <IonToggle></IonToggle>
           </IonItem>
 
-          <IonTitle>Todo</IonTitle>
+          <IonTitle>{title}</IonTitle>
         </IonToolbar>
       </IonHeader>
 

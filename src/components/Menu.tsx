@@ -12,7 +12,7 @@ import {
 
 import { useLocation, useHistory } from "react-router-dom"
 import {
-  folderSharp,
+  folder,
   folderOutline,
   pinSharp,
   settingsOutline,
@@ -42,7 +42,7 @@ const appPages: AppPage[] = [
     title: "Categories",
     url: "/page/categories",
     iosIcon: folderOutline,
-    mdIcon: folderSharp,
+    mdIcon: folder,
   },
   {
     title: "Pinned",
