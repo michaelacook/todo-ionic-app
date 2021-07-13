@@ -6,6 +6,8 @@ import Page from "./pages/Page"
 import Signup from "./pages/Signup"
 import Login from "./pages/Login"
 import Categories from "./pages/Categories"
+import List from "./pages/List"
+import Todo from "./pages/Todo"
 
 import PrivateComponent from "./components/PrivateComponent"
 
@@ -47,6 +49,12 @@ const App: React.FC<Props> = ({ user }) => {
                 exact={true}
                 component={Categories}
               />
+              <Route
+                exact={true}
+                path="/page/categories/:title/list"
+                component={List}
+              />
+              <Route path="/lists/:title" exact={true} component={Todo} />
             </IonRouterOutlet>
           </IonSplitPane>
         </PrivateComponent>

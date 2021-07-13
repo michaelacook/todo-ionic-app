@@ -25,7 +25,7 @@ export function doFetchCategories(emailAddress: string, password: string) {
     dispatch(fetchCategories())
 
     try {
-      const response = await GET(`${API}/categories`, {
+      const response = await GET("categories", {
         emailAddress,
         password,
       })

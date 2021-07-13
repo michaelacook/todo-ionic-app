@@ -2,7 +2,7 @@ import API from "../api"
 const mode: RequestMode = "cors"
 
 export function GET(
-  url: string,
+  endpoint: string,
   credentials?: { emailAddress: string; password: string }
 ) {
   const options: any = {}
@@ -14,11 +14,14 @@ export function GET(
       Authorization: `Basic ${encodedCredentials}`,
     }
   }
-  return fetch(url, Object.keys(options).length ? options : undefined)
+  return fetch(
+    `${API}/${endpoint}`,
+    Object.keys(options).length ? options : undefined
+  )
 }
 
 export function POST(
-  url: string,
+  endpoint: string,
   body: any,
   credentials?: { emailAddress: string; password: string }
 ) {
@@ -40,11 +43,11 @@ export function POST(
     headers: headers,
     body: JSON.stringify(body),
   }
-  return fetch(url, options)
+  return fetch(`${API}/${endpoint}`, options)
 }
 
 export function PUT(
-  url: string,
+  endpoint: string,
   body: any,
   credentials?: { emailAddress: string; password: string }
 ) {
@@ -66,11 +69,11 @@ export function PUT(
     headers: headers,
     body: JSON.stringify(body),
   }
-  return fetch(url, options)
+  return fetch(`${API}/${endpoint}`, options)
 }
 
 export function DELETE(
-  url: string,
+  endpoint: string,
   credentials?: { emailAddress: string; password: string }
 ) {
   const headers: any = {}
@@ -89,5 +92,5 @@ export function DELETE(
     headers: headers,
   }
 
-  return fetch(url, options)
+  return fetch(`${API}/${endpoint}`, options)
 }

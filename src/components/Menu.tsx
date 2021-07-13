@@ -12,29 +12,16 @@ import {
 
 import { useLocation, useHistory } from "react-router-dom"
 import {
-  archiveOutline,
-  archiveSharp,
-  bookmarkOutline,
-  heartOutline,
-  heartSharp,
-  mailOutline,
-  mailSharp,
-  paperPlaneOutline,
-  paperPlaneSharp,
-  trashOutline,
-  trashSharp,
-  warningOutline,
-  warningSharp,
   folderSharp,
   folderOutline,
-  listOutline,
-  listSharp,
+  pinSharp,
   settingsOutline,
   settingsSharp,
   personOutline,
   personSharp,
   logOutOutline,
   logOutSharp,
+  pinOutline,
 } from "ionicons/icons"
 import "./Menu.css"
 import { userInfo } from "os"
@@ -52,16 +39,16 @@ interface AppPage {
 
 const appPages: AppPage[] = [
   {
-    title: "My Categories",
+    title: "Categories",
     url: "/page/categories",
     iosIcon: folderOutline,
     mdIcon: folderSharp,
   },
   {
-    title: "My ToDos",
+    title: "Pinned",
     url: "/page/todos",
-    iosIcon: listOutline,
-    mdIcon: listSharp,
+    iosIcon: pinOutline,
+    mdIcon: pinSharp,
   },
 ]
 

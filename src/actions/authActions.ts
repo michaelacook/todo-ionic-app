@@ -47,7 +47,7 @@ export function doCreateAccount(data: User, cache = false) {
     dispatch(createAccount())
 
     try {
-      const response = await POST(`${API}/users`, data)
+      const response = await POST("users", data)
 
       const resData = await response.json()
       resData.rawPass = data.password
@@ -72,7 +72,7 @@ export function doSignin(data: User, cache = false) {
     dispatch(signin())
 
     try {
-      const response = await GET(`${API}/users/auth/${data.email}`, {
+      const response = await GET(`users/auth/${data.email}`, {
         emailAddress: data.email,
         password: data.password,
       })
