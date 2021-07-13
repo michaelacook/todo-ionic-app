@@ -28,7 +28,6 @@ import {
   addSharp,
   trash,
   createSharp,
-  listSharp,
   chevronUpSharp,
   chevronDownSharp,
 } from "ionicons/icons"
@@ -86,6 +85,7 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories }) => {
           {categories
             ? categories.map((category, i) => (
                 <Collapsible
+                  key={category.id}
                   onOpening={() => toggleCollapsibleState(category.id)}
                   onClosing={() => toggleCollapsibleState(category.id)}
                   trigger={
