@@ -57,7 +57,7 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories }) => {
   function navigateToList(list) {
     const { ListItems } = list
     history.push({
-      pathname: `/lists/${list.title}`,
+      pathname: `/lists/${list.id}`,
       state: { ListItems, title: list.title },
     })
   }

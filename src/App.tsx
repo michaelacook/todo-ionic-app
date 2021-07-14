@@ -48,7 +48,7 @@ const App: React.FC<Props> = ({ user }) => {
                 exact={true}
                 component={Categories}
               />
-              <Route path="/lists/:title" exact={true} component={Todo} />
+              <Route path="/lists/:id" exact={true} component={Todo} />
             </IonRouterOutlet>
           </IonSplitPane>
         </PrivateComponent>

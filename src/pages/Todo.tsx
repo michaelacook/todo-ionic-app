@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { useHistory } from "react-router-dom"
+import { useHistory, useParams } from "react-router-dom"
 import {
   IonButtons,
   IonButton,
@@ -22,10 +22,20 @@ import {
   IonNote,
   IonToggle,
 } from "@ionic/react"
-
+import { connect } from "react-redux"
 import { trash, menuSharp, createSharp } from "ionicons/icons"
+import { doFetchList } from "../actions/listActions"
 
-const Todo: React.FC = () => {
+interface Props {
+  list
+  user
+  error: { message: string }
+  loading: boolean
+  dispatch: any
+}
+
+const Todo: React.FC<Props> = ({ dispatch, loading, error, list, user }) => {
+  const { id }: any = useParams()
   const history = useHistory()
   const [title, setTitle] = useState("")
   const [items, setItems] = useState([])
@@ -47,6 +57,8 @@ const Todo: React.FC = () => {
       setItems(ListItems)
       setTitle(title)
     }
+
+    dispatch(doFetchList(Number(id), user.email, user.rawPass))
   }, [])
 
   return (
@@ -125,4 +137,11 @@ const Todo: React.FC = () => {
   )
 }
 
-export default Todo
+const mapStateToProps = (state: Props) => ({
+  loading: state.list.loading,
+  error: state.list.error,
+  list: state.list.list,
+  user: state.user.user,
+})
+
+export default connect(mapStateToProps)(Todo)

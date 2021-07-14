@@ -1,6 +1,5 @@
 import { Action } from "../types"
 import { GET, POST } from "../lib/http"
-import API from "../api"
 
 export const FETCH_CATEGORIES = "FETCH_CATEGORIES"
 export const FETCH_CATEGORIES_FAIL = "FETCH_CATEGORIES_FAIL"
