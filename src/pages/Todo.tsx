@@ -25,6 +25,7 @@ import {
 import { connect } from "react-redux"
 import { trash, menuSharp, createSharp } from "ionicons/icons"
 import { doFetchList } from "../actions/listActions"
+import { doPostListItem, doDeleteItem } from "../actions/listItemsActions"
 
 interface Props {
   list
@@ -52,6 +53,30 @@ const Todo: React.FC<Props> = ({ dispatch, loading, error, list, user }) => {
   useEffect(() => {
     dispatch(doFetchList(Number(id), user.email, user.rawPass))
   }, [])
+
+  function handlePostListItem() {
+    if (newItem) {
+      const payload = {
+        listId: list.id,
+        content: newItem,
+      }
+
+      if (newItemComment) {
+        payload["comments"] = newItemComment
+      }
+
+      dispatch(
+        doPostListItem(Number(list.id), payload, user.email, user.rawPass)
+      )
+
+      setNewItem("")
+      setNewItemComment("")
+    }
+  }
+
+  function handleDeleteItem(id: number, listId: number) {
+    dispatch(doDeleteItem(id, listId, user.email, user.rawPass))
+  }
 
   return (
     <IonPage>
@@ -94,7 +119,9 @@ const Todo: React.FC<Props> = ({ dispatch, loading, error, list, user }) => {
 
                     <IonItemOption
                       color="danger"
-                      onClick={() => deleteItem(item.id)}
+                      onClick={() =>
+                        handleDeleteItem(Number(item.id), Number(item.listId))
+                      }
                     >
                       <IonIcon icon={trash} slot="icon-only" />
                     </IonItemOption>
@@ -125,7 +152,12 @@ const Todo: React.FC<Props> = ({ dispatch, loading, error, list, user }) => {
             onIonChange={(e) => setNewItemComment(e.detail.value!)}
           ></IonTextarea>
         </IonItem>
-        <IonButton onClick={addNewItem} expand="full" size="default">
+        <IonButton
+          onClick={handlePostListItem}
+          expand="full"
+          size="default"
+          shape="round"
+        >
           Add
         </IonButton>
       </IonContent>
