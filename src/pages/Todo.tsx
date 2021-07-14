@@ -36,8 +36,6 @@ interface Props {
 
 const Todo: React.FC<Props> = ({ dispatch, loading, error, list, user }) => {
   const { id }: any = useParams()
-  const history = useHistory()
-  const [title, setTitle] = useState("")
   const [items, setItems] = useState([])
   const [newItem, setNewItem] = useState("")
   const [newItemComment, setNewItemComment] = useState("")
@@ -52,12 +50,6 @@ const Todo: React.FC<Props> = ({ dispatch, loading, error, list, user }) => {
   }
 
   useEffect(() => {
-    if (history.location.state) {
-      const { ListItems, title }: any = history.location.state
-      setItems(ListItems)
-      setTitle(title)
-    }
-
     dispatch(doFetchList(Number(id), user.email, user.rawPass))
   }, [])
 
@@ -73,44 +65,48 @@ const Todo: React.FC<Props> = ({ dispatch, loading, error, list, user }) => {
             <IonToggle></IonToggle>
           </IonItem>
 
-          <IonTitle>{title}</IonTitle>
+          <IonTitle>{list ? list.title : null}</IonTitle>
         </IonToolbar>
       </IonHeader>
 
       <IonContent>
-        {!items.length ? (
-          <IonNote className="ion-margin-start ion-margin-top">
-            You don't have any list items yet.
-          </IonNote>
+        {list ? (
+          !list.ListItems.length ? (
+            <IonNote className="ion-margin-start ion-margin-top">
+              You don't have any list items yet.
+            </IonNote>
+          ) : null
         ) : null}
         <IonList>
-          {items.map((item) => (
-            <IonItemSliding key={item.id}>
-              <IonItemOptions side="end">
-                <IonItemOption>
-                  <IonIcon icon={menuSharp} slot="top" />
-                  Details
-                </IonItemOption>
+          {list
+            ? list.ListItems.map((item) => (
+                <IonItemSliding key={item.id}>
+                  <IonItemOptions side="end">
+                    <IonItemOption>
+                      <IonIcon icon={menuSharp} slot="top" />
+                      Details
+                    </IonItemOption>
 
-                <IonItemOption color="success">
-                  <IonIcon icon={createSharp} slot="top" />
-                  Edit
-                </IonItemOption>
+                    <IonItemOption color="success">
+                      <IonIcon icon={createSharp} slot="top" />
+                      Edit
+                    </IonItemOption>
 
-                <IonItemOption
-                  color="danger"
-                  onClick={() => deleteItem(item.id)}
-                >
-                  <IonIcon icon={trash} slot="icon-only" />
-                </IonItemOption>
-              </IonItemOptions>
+                    <IonItemOption
+                      color="danger"
+                      onClick={() => deleteItem(item.id)}
+                    >
+                      <IonIcon icon={trash} slot="icon-only" />
+                    </IonItemOption>
+                  </IonItemOptions>
 
-              <IonItem key={item.id}>
-                <IonLabel>{item.content}</IonLabel>
-                <IonCheckbox slot="start" checked={item.complete} />
-              </IonItem>
-            </IonItemSliding>
-          ))}
+                  <IonItem key={item.id}>
+                    <IonLabel>{item.content}</IonLabel>
+                    <IonCheckbox slot="start" checked={item.complete} />
+                  </IonItem>
+                </IonItemSliding>
+              ))
+            : null}
         </IonList>
         <IonItem>
           <IonInput

@@ -7,7 +7,7 @@ export const initialState = {
   list: null,
 }
 
-export default function listItemsReducer(state = initialState, action: Action) {
+export default function listReducer(state = initialState, action: Action) {
   switch (action.type) {
     case actions.FETCH_LIST:
       return { ...state, loading: true, error: null }
@@ -18,7 +18,7 @@ export default function listItemsReducer(state = initialState, action: Action) {
         ...state,
         loading: false,
         error: null,
-        listItems: action.payload,
+        list: action.payload,
       }
     default:
       return state
