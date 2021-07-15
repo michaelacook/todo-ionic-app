@@ -2,7 +2,6 @@ import { Action } from "../types"
 import * as actions from "../actions/listItemsActions"
 
 export const initialState = {
-  loading: false,
   error: null,
   listItem: null,
 }
@@ -10,17 +9,23 @@ export const initialState = {
 export default function listItemReducer(state = initialState, action: Action) {
   switch (action.type) {
     case actions.POST_ITEM:
-      return { ...state, loading: true, error: null }
+      return { ...state, error: null }
     case actions.POST_ITEM_FAIL:
-      return { ...state, loading: false, error: action.payload }
+      return { ...state, error: action.payload }
     case actions.POST_ITEM_SUCCESS:
-      return { ...state, loading: false, error: null, listItem: action.payload }
+      return { ...state, error: null, listItem: action.payload }
+    case actions.UPDATE_ITEM:
+      return { ...state, error: null, listItem: null }
+    case actions.UPDATE_ITEM_FAIL:
+      return { ...state, error: action.payload, listItem: null }
+    case actions.UPDATE_ITEM_SUCCESS:
+      return { ...state, error: null, listItem: null }
     case actions.DELETE_ITEM:
-      return { ...state, loading: true, error: null, listItem: null }
+      return { ...state, error: null, listItem: null }
     case actions.DELETE_ITEM_FAIL:
-      return { ...state, loading: false, error: action.payload, listItem: null }
+      return { ...state, error: action.payload, listItem: null }
     case actions.DELETE_ITEM_SUCCESS:
-      return { ...state, loading: false, error: null, listItem: null }
+      return { ...state, error: null, listItem: null }
     default:
       return state
   }

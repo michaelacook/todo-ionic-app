@@ -1,11 +1,14 @@
 import { Action } from "../types"
-import { POST, DELETE } from "../lib/http"
+import { POST, PUT, DELETE } from "../lib/http"
 
 import { doFetchList } from "./listActions"
 
 export const POST_ITEM = "POST_ITEM"
 export const POST_ITEM_FAIL = "POST_ITEM_FAIL"
 export const POST_ITEM_SUCCESS = "POST_ITEM_SUCCESS"
+export const UPDATE_ITEM = "UPDATE_ITEM"
+export const UPDATE_ITEM_FAIL = "UPDATE_ITEM_FAIL"
+export const UPDATE_ITEM_SUCCESS = "UPDATE_ITEM_SUCCESS"
 export const DELETE_ITEM = "DELETE_ITEM"
 export const DELETE_ITEM_FAIL = "DELETE_ITEM_FAIL"
 export const DELETE_ITEM_SUCCESS = "DELETE_ITEM_SUCCESS"
@@ -19,9 +22,22 @@ export const postItemFail = (err): Action => ({
   payload: err,
 })
 
-export const postItemSuccess = (listItem) => ({
+export const postItemSuccess = (listItem): Action => ({
   type: POST_ITEM_SUCCESS,
   payload: listItem,
+})
+
+export const updateItem = (): Action => ({
+  type: UPDATE_ITEM,
+})
+
+export const updateItemFail = (err): Action => ({
+  type: UPDATE_ITEM_FAIL,
+  payload: err,
+})
+
+export const updateItemSuccess = (): Action => ({
+  type: UPDATE_ITEM_SUCCESS,
 })
 
 export const deleteItem = (): Action => ({
@@ -56,6 +72,36 @@ export function doPostListItem(id: number, payload, emailAddress, password) {
       }
     } catch (err) {
       dispatch(postItemFail(err))
+    }
+  }
+}
+
+export function doUpdateItem(
+  id: number,
+  listId: number,
+  payload,
+  emailAddress,
+  password
+) {
+  return async (dispatch) => {
+    dispatch(updateItem())
+
+    try {
+      const response = await PUT(`list-items/${id}`, payload, {
+        emailAddress,
+        password,
+      })
+
+      const resData = await response.json()
+
+      if (response.status !== 200) {
+        dispatch(updateItemFail(resData))
+      } else {
+        dispatch(doFetchList(listId, emailAddress, password))
+        dispatch(updateItemSuccess())
+      }
+    } catch (err) {
+      dispatch(updateItemFail(err))
     }
   }
 }

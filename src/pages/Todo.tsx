@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { useHistory, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import {
   IonButtons,
   IonButton,
@@ -25,17 +25,20 @@ import {
 import { connect } from "react-redux"
 import { trash, menuSharp, createSharp } from "ionicons/icons"
 import { doFetchList } from "../actions/listActions"
-import { doPostListItem, doDeleteItem } from "../actions/listItemsActions"
+import {
+  doPostListItem,
+  doUpdateItem,
+  doDeleteItem,
+} from "../actions/listItemsActions"
 
 interface Props {
   list
   user
   error: { message: string }
-  loading: boolean
   dispatch: any
 }
 
-const Todo: React.FC<Props> = ({ dispatch, loading, error, list, user }) => {
+const Todo: React.FC<Props> = ({ dispatch, error, list, user }) => {
   const { id }: any = useParams()
   const [items, setItems] = useState([])
   const [newItem, setNewItem] = useState("")
@@ -76,6 +79,18 @@ const Todo: React.FC<Props> = ({ dispatch, loading, error, list, user }) => {
 
   function handleDeleteItem(id: number, listId: number) {
     dispatch(doDeleteItem(id, listId, user.email, user.rawPass))
+  }
+
+  function changeCompleteStatus(item) {
+    dispatch(
+      doUpdateItem(
+        Number(item.id),
+        Number(list.id),
+        { complete: item.complete ? false : true },
+        user.email,
+        user.rawPass
+      )
+    )
   }
 
   return (
@@ -129,7 +144,11 @@ const Todo: React.FC<Props> = ({ dispatch, loading, error, list, user }) => {
 
                   <IonItem key={item.id}>
                     <IonLabel>{item.content}</IonLabel>
-                    <IonCheckbox slot="start" checked={item.complete} />
+                    <IonCheckbox
+                      slot="start"
+                      checked={item.complete}
+                      onClick={() => changeCompleteStatus(item)}
+                    />
                   </IonItem>
                 </IonItemSliding>
               ))
@@ -166,7 +185,6 @@ const Todo: React.FC<Props> = ({ dispatch, loading, error, list, user }) => {
 }
 
 const mapStateToProps = (state: Props) => ({
-  loading: state.list.loading,
   error: state.list.error,
   list: state.list.list,
   user: state.user.user,
