@@ -10,30 +10,9 @@ import {
   IonToolbar,
   IonList,
   IonItem,
-  IonIcon,
-  IonLabel,
-  IonFab,
-  IonFabButton,
-  IonItemSliding,
-  IonItemOptions,
-  IonItemOption,
-  useIonViewWillEnter,
   IonActionSheet,
 } from "@ionic/react"
-
-import {
-  documentTextOutline,
-  create,
-  folder,
-  addSharp,
-  trash,
-  createSharp,
-  chevronUpSharp,
-  chevronDownSharp,
-  add,
-  close,
-} from "ionicons/icons"
-
+import { documentTextOutline, create, trash, close } from "ionicons/icons"
 import { doFetchCategories } from "../actions/categoryActions"
 
 type Props = {
@@ -81,7 +60,7 @@ const ManageCategories: React.FC<Props> = ({ user, categories, dispatch }) => {
             {
               text: "New list",
               role: "destructive",
-              icon: add,
+              icon: documentTextOutline,
               handler: () => null,
             },
             {
