@@ -54,7 +54,7 @@ const Signup: React.FC<Props> = ({
 
   useEffect(() => {
     if (user) {
-      history.push("/")
+      history.push("/page/categories")
     }
   })
 
