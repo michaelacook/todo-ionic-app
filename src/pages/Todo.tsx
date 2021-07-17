@@ -44,15 +44,6 @@ const Todo: React.FC<Props> = ({ dispatch, error, list, user }) => {
   const [newItem, setNewItem] = useState("")
   const [newItemComment, setNewItemComment] = useState("")
 
-  function addNewItem() {
-    setNewItem("")
-    setNewItemComment("")
-  }
-
-  function deleteItem(id: number) {
-    setItems([...items.filter((item) => item.id !== id)])
-  }
-
   useEffect(() => {
     dispatch(doFetchList(Number(id), user.email, user.rawPass))
   }, [])
