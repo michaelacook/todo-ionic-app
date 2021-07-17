@@ -24,10 +24,10 @@ import {
 } from "@ionic/react"
 import { connect } from "react-redux"
 import { trash, menuSharp, createSharp } from "ionicons/icons"
-import { doFetchList } from "../actions/listActions"
+import { doFetchList, doUpdateList, updateList } from "../actions/listActions"
 import {
-  doPostListItem,
   doUpdateItem,
+  doPostListItem,
   doDeleteItem,
 } from "../actions/listItemsActions"
 
@@ -77,6 +77,19 @@ const Todo: React.FC<Props> = ({ dispatch, error, list, user }) => {
     }
   }
 
+  function handlePinList() {
+    dispatch(
+      doUpdateList(
+        Number(list.id),
+        {
+          pinned: list.pinned ? false : true,
+        },
+        user.email,
+        user.rawPass
+      )
+    )
+  }
+
   function handleDeleteItem(id: number, listId: number) {
     dispatch(doDeleteItem(id, listId, user.email, user.rawPass))
   }
@@ -102,7 +115,10 @@ const Todo: React.FC<Props> = ({ dispatch, error, list, user }) => {
           </IonButtons>
           <IonItem slot="end" lines="none">
             <IonLabel>Pinned</IonLabel>
-            <IonToggle></IonToggle>
+            <IonToggle
+              checked={list ? list.pinned : false}
+              onClick={handlePinList}
+            ></IonToggle>
           </IonItem>
 
           <IonTitle>{list ? list.title : null}</IonTitle>
