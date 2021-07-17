@@ -17,11 +17,7 @@ import {
   IonItemSliding,
   IonItemOptions,
   IonItemOption,
-  IonNote,
 } from "@ionic/react"
-
-import Collapsible from "react-collapsible"
-import { useHistory } from "react-router-dom"
 import {
   documentTextOutline,
   folder,
@@ -31,6 +27,9 @@ import {
   chevronUpSharp,
   chevronDownSharp,
 } from "ionicons/icons"
+import useDynamicRefs from "use-dynamic-refs"
+import Collapsible from "react-collapsible"
+import { useHistory } from "react-router-dom"
 import { doFetchCategories } from "../actions/categoryActions"
 
 type Props = {
@@ -41,32 +40,36 @@ type Props = {
 
 const Categories: React.FC<Props> = ({ dispatch, user, categories }) => {
   const history = useHistory()
+  const [getRef, setRef] = useDynamicRefs()
   const [collapsibles, setCollapsibles] = useState(
-    categories ? categories.map((cat) => ({ id: cat.id, open: false })) : []
+    categories
+      ? categories.map((cat) => ({
+          id: cat.id,
+          open: false,
+        }))
+      : []
   )
+
   useEffect(() => {
     dispatch(doFetchCategories(user.email, user.rawPass))
   }, [])
 
   useEffect(() => {
     setCollapsibles(
-      categories ? categories.map((cat) => ({ id: cat.id, open: false })) : []
+      categories
+        ? categories.map((cat) => ({
+            id: cat.id,
+            open: false,
+            sliderOpen: false,
+            sliderRef: getRef(cat.id),
+          }))
+        : []
     )
   }, [categories])
 
   function navigateToList(list) {
     const { ListItems } = list
-    history.push({
-      pathname: `/lists/${list.id}`,
-      state: { ListItems, title: list.title },
-    })
-  }
-
-  function toggleCollapsibleState(id: number) {
-    const cols = [...collapsibles]
-    const target = cols.indexOf(cols.find((col) => col.id === id))
-    cols[target]["open"] = !cols[target]["open"]
-    setCollapsibles(cols)
+    history.push(`/lists/${list.id}`)
   }
 
   return (
@@ -86,38 +89,26 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories }) => {
             ? categories.map((category, i) => (
                 <Collapsible
                   key={category.id}
-                  onOpening={() => toggleCollapsibleState(category.id)}
-                  onClosing={() => toggleCollapsibleState(category.id)}
+                  triggerDisabled={
+                    collapsibles[i] ? collapsibles[i]["sliderOpen"] : false
+                  }
                   trigger={
-                    <IonItemSliding key={category.id}>
-                      <IonItemOptions side="end">
-                        <IonItemOption color="success">
-                          <IonIcon icon={createSharp} slot="top" />
-                          Edit
-                        </IonItemOption>
+                    <IonItem key={category.title} button>
+                      <IonIcon slot="start" md={folder} />
+                      <IonLabel>{category.title}</IonLabel>
 
-                        <IonItemOption color="danger">
-                          <IonIcon icon={trash} slot="icon-only" />
-                        </IonItemOption>
-                      </IonItemOptions>
-
-                      <IonItem key={category.title} button>
-                        <IonIcon slot="start" md={folder} />
-                        <IonLabel>{category.title}</IonLabel>
-
-                        <IonIcon
-                          slot="end"
-                          md={
-                            collapsibles.length
-                              ? collapsibles[i]["open"]
-                                ? chevronUpSharp
-                                : chevronDownSharp
-                              : null
-                          }
-                          size="small"
-                        />
-                      </IonItem>
-                    </IonItemSliding>
+                      <IonIcon
+                        slot="end"
+                        md={
+                          collapsibles.length
+                            ? collapsibles[i]["open"]
+                              ? chevronUpSharp
+                              : chevronDownSharp
+                            : null
+                        }
+                        size="small"
+                      />
+                    </IonItem>
                   }
                 >
                   {category.Lists

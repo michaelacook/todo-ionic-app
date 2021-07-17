@@ -22,6 +22,7 @@ import {
   logOutOutline,
   logOutSharp,
   pinOutline,
+  hammer,
 } from "ionicons/icons"
 import "./Menu.css"
 import { userInfo } from "os"
@@ -45,6 +46,12 @@ const appPages: AppPage[] = [
     mdIcon: folder,
   },
   {
+    title: "Manage Categories",
+    url: "/page/categories/manage",
+    iosIcon: hammer,
+    mdIcon: hammer,
+  },
+  {
     title: "Pinned",
     url: "/page/todos",
     iosIcon: pinOutline,
@@ -59,12 +66,12 @@ const bottomAppPages: AppPage[] = [
     iosIcon: personOutline,
     mdIcon: personSharp,
   },
-  {
-    title: "Settings",
-    url: "/page/settings",
-    iosIcon: settingsOutline,
-    mdIcon: settingsSharp,
-  },
+  // {
+  //   title: "Settings",
+  //   url: "/page/settings",
+  //   iosIcon: settingsOutline,
+  //   mdIcon: settingsSharp,
+  // },
 ]
 
 type Props = {
@@ -125,7 +132,7 @@ const Menu: React.FC<Props> = ({ dispatch, user }) => {
               <IonIcon slot="start" ios={personOutline} md={personSharp} />
               <IonLabel>Account</IonLabel>
             </IonItem>
-            <IonItem
+            {/* <IonItem
               routerLink="/page/settings"
               routerDirection="none"
               className={
@@ -136,7 +143,7 @@ const Menu: React.FC<Props> = ({ dispatch, user }) => {
             >
               <IonIcon slot="start" ios={settingsOutline} md={settingsSharp} />
               <IonLabel>Settings</IonLabel>
-            </IonItem>
+            </IonItem> */}
             <IonItem detail={false} lines="none" onClick={handleSignout}>
               <IonIcon slot="start" ios={logOutOutline} md={logOutSharp} />
               <IonLabel>Logout</IonLabel>
