@@ -53,7 +53,7 @@ const appPages: AppPage[] = [
   },
   {
     title: "Pinned",
-    url: "/page/todos",
+    url: "/lists/pinned",
     iosIcon: pinOutline,
     mdIcon: pinSharp,
   },
