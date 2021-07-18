@@ -30,7 +30,7 @@ const NewCategory: React.FC<Props> = ({ dispatch, user }) => {
       dispatch(
         doPostCategory({ userId: user.id, title }, user.email, user.rawPass)
       )
-      history.push("/page/categories/manage")
+      history.push("/page/categories")
     }
   }
 

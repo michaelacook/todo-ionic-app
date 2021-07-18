@@ -63,9 +63,7 @@ const ManageCategories: React.FC<Props> = ({ user, categories, dispatch }) => {
               text: "New",
               role: "destructive",
               icon: documentTextOutline,
-              handler: () => {
-                history.push("/page/categories/new")
-              },
+              handler: () => null,
             },
             {
               text: "Edit",

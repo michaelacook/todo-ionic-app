@@ -17,6 +17,7 @@ import {
   IonItemSliding,
   IonItemOptions,
   IonItemOption,
+  IonNote,
 } from "@ionic/react"
 import {
   documentTextOutline,
@@ -97,20 +98,15 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories }) => {
                       <IonIcon slot="start" md={folder} />
                       <IonLabel>{category.title}</IonLabel>
 
-                      <IonIcon
-                        slot="end"
-                        md={
-                          collapsibles.length
-                            ? collapsibles[i]["open"]
-                              ? chevronUpSharp
-                              : chevronDownSharp
-                            : null
-                        }
-                        size="small"
-                      />
+                      <IonIcon slot="end" md={chevronDownSharp} size="small" />
                     </IonItem>
                   }
                 >
+                  {!category.Lists.length ? (
+                    <IonNote className="ion-margin-top ion-margin-start">
+                      This category has no lists yet.
+                    </IonNote>
+                  ) : null}
                   {category.Lists
                     ? category.Lists.map((list) => (
                         <IonItemSliding key={list.id}>
@@ -142,7 +138,11 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories }) => {
             : null}
         </IonList>
         <IonFab vertical="bottom" horizontal="center" slot="fixed">
-          <IonFabButton>
+          <IonFabButton
+            onClick={() => {
+              history.push("/page/categories/new")
+            }}
+          >
             <IonIcon md={addSharp} />
           </IonFabButton>
         </IonFab>
