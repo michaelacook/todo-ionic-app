@@ -14,7 +14,7 @@ import {
   IonActionSheet,
 } from "@ionic/react"
 import { documentTextOutline, create, trash, close } from "ionicons/icons"
-import { doFetchCategories } from "../actions/categoryActions"
+import { doFetchCategories, doDeleteCategory } from "../actions/categoryActions"
 
 type Props = {
   categories
@@ -24,6 +24,7 @@ type Props = {
 
 const ManageCategories: React.FC<Props> = ({ user, categories, dispatch }) => {
   const history = useHistory()
+  const [category, setCategory] = useState(null)
   const [actionSheetOpen, setActionSheetOpen] = useState(false)
 
   useEffect(() => {
@@ -47,7 +48,10 @@ const ManageCategories: React.FC<Props> = ({ user, categories, dispatch }) => {
                 <IonItem
                   key={category.id}
                   detail={true}
-                  onClick={() => setActionSheetOpen(true)}
+                  onClick={() => {
+                    setActionSheetOpen(true)
+                    setCategory(category)
+                  }}
                 >
                   {category.title}
                 </IonItem>
@@ -57,7 +61,10 @@ const ManageCategories: React.FC<Props> = ({ user, categories, dispatch }) => {
 
         <IonActionSheet
           isOpen={actionSheetOpen}
-          onDidDismiss={() => setActionSheetOpen(false)}
+          onDidDismiss={() => {
+            setActionSheetOpen(false)
+            setCategory(null)
+          }}
           buttons={[
             {
               text: "New",
@@ -76,7 +83,13 @@ const ManageCategories: React.FC<Props> = ({ user, categories, dispatch }) => {
               role: "destructive",
               icon: trash,
               handler: () => {
-                console.log("Delete clicked")
+                dispatch(
+                  doDeleteCategory(
+                    Number(category.id),
+                    user.email,
+                    user.rawPass
+                  )
+                )
               },
             },
             {

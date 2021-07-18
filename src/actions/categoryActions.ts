@@ -1,5 +1,5 @@
 import { Action } from "../types"
-import { GET, POST } from "../lib/http"
+import { GET, POST, DELETE } from "../lib/http"
 
 export const FETCH_CATEGORIES = "FETCH_CATEGORIES"
 export const FETCH_CATEGORIES_FAIL = "FETCH_CATEGORIES_FAIL"
@@ -7,6 +7,8 @@ export const FETCH_CATEGORIES_SUCCESS = "FETCH_CATEGORIES_SUCCESS"
 export const POST_CATEGORY = "POST_CATEGORY"
 export const POST_CATEGORY_FAIL = "POST_CATEGORY_FAIL"
 export const POST_CATEGORY_SUCCESS = "POST_CATEGORY_SUCCESS"
+export const DELETE_CATEGORY = "DELETE_CATEGORY"
+export const DELETE_CATEGORY_FAIL = "DELETE_CATEGORY_FAIL"
 
 export const fetchCategories = (): Action => ({
   type: FETCH_CATEGORIES,
@@ -33,6 +35,15 @@ export const postCategoryFail = (err): Action => ({
 
 export const postCategorySuccess = (): Action => ({
   type: POST_CATEGORY_SUCCESS,
+})
+
+export const deleteCategory = (): Action => ({
+  type: DELETE_CATEGORY,
+})
+
+export const deleteCategoryFail = (err): Action => ({
+  type: DELETE_CATEGORY_FAIL,
+  payload: err,
 })
 
 export function doFetchCategories(emailAddress: string, password: string) {
@@ -82,6 +93,27 @@ export function doPostCategory(
       }
     } catch (err) {
       dispatch(postCategoryFail(err))
+    }
+  }
+}
+
+export function doDeleteCategory(
+  id: number,
+  emailAddress: string,
+  password: string
+) {
+  return async (dispatch) => {
+    dispatch(deleteCategory())
+
+    try {
+      await DELETE(`categories/${id}`, {
+        emailAddress,
+        password,
+      })
+
+      dispatch(doFetchCategories(emailAddress, password))
+    } catch (err) {
+      dispatch(deleteCategoryFail(err))
     }
   }
 }
