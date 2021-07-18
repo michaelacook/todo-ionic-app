@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useHistory } from "react-router-dom"
 import {
   IonButtons,
   IonButton,
@@ -40,6 +40,7 @@ interface Props {
 
 const Todo: React.FC<Props> = ({ dispatch, error, list, user }) => {
   const { id }: any = useParams()
+  const history = useHistory()
   const [items, setItems] = useState([])
   const [newItem, setNewItem] = useState("")
   const [newItemComment, setNewItemComment] = useState("")
@@ -129,14 +130,14 @@ const Todo: React.FC<Props> = ({ dispatch, error, list, user }) => {
             ? list.ListItems.map((item) => (
                 <IonItemSliding key={item.id}>
                   <IonItemOptions side="end">
-                    <IonItemOption>
+                    <IonItemOption
+                      type="button"
+                      onClick={() => {
+                        history.push(`/items/${item.id}`)
+                      }}
+                    >
                       <IonIcon icon={menuSharp} slot="top" />
                       Details
-                    </IonItemOption>
-
-                    <IonItemOption color="success">
-                      <IonIcon icon={createSharp} slot="top" />
-                      Edit
                     </IonItemOption>
 
                     <IonItemOption
@@ -145,7 +146,7 @@ const Todo: React.FC<Props> = ({ dispatch, error, list, user }) => {
                         handleDeleteItem(Number(item.id), Number(item.listId))
                       }
                     >
-                      <IonIcon icon={trash} slot="icon-only" />
+                      <IonIcon icon={trash} size="large" />
                     </IonItemOption>
                   </IonItemOptions>
 

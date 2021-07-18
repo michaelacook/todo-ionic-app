@@ -27,6 +27,12 @@ export default function categoryReducer(state = initialState, action: Action) {
         error: null,
         categories: action.payload,
       }
+    case actions.POST_CATEGORY:
+      return { ...state, loading: true, error: null }
+    case actions.POST_CATEGORY_FAIL:
+      return { ...state, loading: false, error: action.payload }
+    case actions.FETCH_CATEGORIES_SUCCESS:
+      return { ...state, loading: false }
     default:
       return state
   }

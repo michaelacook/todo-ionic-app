@@ -58,7 +58,7 @@ const ManageCategories: React.FC<Props> = ({ user, categories, dispatch }) => {
           onDidDismiss={() => setActionSheetOpen(false)}
           buttons={[
             {
-              text: "New list",
+              text: "New",
               role: "destructive",
               icon: documentTextOutline,
               handler: () => null,

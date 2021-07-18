@@ -8,6 +8,12 @@ export const initialState = {
 
 export default function listItemReducer(state = initialState, action: Action) {
   switch (action.type) {
+    case actions.FETCH_ITEM:
+      return { ...state, error: null }
+    case actions.FETCH_ITEM_FAIL:
+      return { ...state, error: action.payload }
+    case actions.FETCH_ITEM_SUCCESS:
+      return { ...state, listItem: action.payload }
     case actions.POST_ITEM:
       return { ...state, error: null }
     case actions.POST_ITEM_FAIL:
