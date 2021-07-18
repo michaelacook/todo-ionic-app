@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { connect } from "react-redux"
 import {
+  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
@@ -22,7 +23,7 @@ import {
 import {
   documentTextOutline,
   folder,
-  addSharp,
+  add,
   trash,
   createSharp,
   chevronUpSharp,
@@ -30,7 +31,7 @@ import {
 } from "ionicons/icons"
 import useDynamicRefs from "use-dynamic-refs"
 import Collapsible from "react-collapsible"
-import { useHistory } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 import { doFetchCategories } from "../actions/categoryActions"
 
 type Props = {
@@ -102,11 +103,6 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories }) => {
                     </IonItem>
                   }
                 >
-                  {!category.Lists.length ? (
-                    <IonNote className="ion-margin-top ion-margin-start">
-                      This category has no lists yet.
-                    </IonNote>
-                  ) : null}
                   {category.Lists
                     ? category.Lists.map((list) => (
                         <IonItemSliding key={list.id}>
@@ -133,6 +129,11 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories }) => {
                         </IonItemSliding>
                       ))
                     : null}
+                  <IonItem>
+                    <Link to="/lists/new" style={{ textDecoration: "none" }}>
+                      New List
+                    </Link>
+                  </IonItem>
                 </Collapsible>
               ))
             : null}
@@ -143,7 +144,7 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories }) => {
               history.push("/page/categories/new")
             }}
           >
-            <IonIcon md={addSharp} />
+            <IonIcon md={add} />
           </IonFabButton>
         </IonFab>
       </IonContent>
