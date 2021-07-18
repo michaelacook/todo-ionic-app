@@ -2,11 +2,11 @@ import React, { useState } from "react"
 import { useHistory } from "react-router"
 import {
   IonButton,
+  IonBackButton,
   IonPage,
   IonHeader,
   IonToolbar,
   IonButtons,
-  IonMenuButton,
   IonTitle,
   IonContent,
   IonItem,
@@ -30,6 +30,7 @@ const NewCategory: React.FC<Props> = ({ dispatch, user }) => {
       dispatch(
         doPostCategory({ userId: user.id, title }, user.email, user.rawPass)
       )
+      setTitle("")
       history.push("/page/categories")
     }
   }
@@ -39,7 +40,7 @@ const NewCategory: React.FC<Props> = ({ dispatch, user }) => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonMenuButton />
+            <IonBackButton />
           </IonButtons>
           <IonTitle>New Category</IonTitle>
         </IonToolbar>
