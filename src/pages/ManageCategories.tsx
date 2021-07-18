@@ -1,4 +1,5 @@
-import React, { useState, useEffect, RefObject } from "react"
+import React, { useState, useEffect } from "react"
+import { useHistory } from "react-router"
 import { connect } from "react-redux"
 import {
   IonButtons,
@@ -22,6 +23,7 @@ type Props = {
 }
 
 const ManageCategories: React.FC<Props> = ({ user, categories, dispatch }) => {
+  const history = useHistory()
   const [actionSheetOpen, setActionSheetOpen] = useState(false)
 
   useEffect(() => {
@@ -61,7 +63,9 @@ const ManageCategories: React.FC<Props> = ({ user, categories, dispatch }) => {
               text: "New",
               role: "destructive",
               icon: documentTextOutline,
-              handler: () => null,
+              handler: () => {
+                history.push("/page/categories/new")
+              },
             },
             {
               text: "Edit",

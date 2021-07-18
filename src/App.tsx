@@ -6,6 +6,7 @@ import Signup from "./pages/Signup"
 import Login from "./pages/Login"
 import Categories from "./pages/Categories"
 import ManageCategories from "./pages/ManageCategories"
+import NewCategory from "./pages/NewCategory"
 import NewList from "./pages/NewList"
 import Todo from "./pages/Todo"
 import ItemDetails from "./pages/ItemDetails"
@@ -56,7 +57,11 @@ const App: React.FC<Props> = ({ user }) => {
                 exact={true}
                 component={ManageCategories}
               />
-
+              <Route
+                path="/page/categories/new"
+                exact={true}
+                component={NewCategory}
+              />
               <Route path="/lists/:id" exact={true} component={Todo} />
               <Route path="/lists/new" exact={true} component={NewList} />
               <Route path="/lists/pinned" exact={true} component={Pinned} />
