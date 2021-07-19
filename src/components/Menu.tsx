@@ -1,4 +1,7 @@
+import { useState } from "react"
+
 import {
+  IonAlert,
   IonContent,
   IonIcon,
   IonItem,
@@ -15,8 +18,6 @@ import {
   folder,
   folderOutline,
   pinSharp,
-  settingsOutline,
-  settingsSharp,
   personOutline,
   personSharp,
   logOutOutline,
@@ -25,10 +26,8 @@ import {
   hammer,
 } from "ionicons/icons"
 import "./Menu.css"
-import { userInfo } from "os"
 
 import { doSignout } from "../actions/authActions"
-
 import { connect } from "react-redux"
 
 interface AppPage {
@@ -66,12 +65,6 @@ const bottomAppPages: AppPage[] = [
     iosIcon: personOutline,
     mdIcon: personSharp,
   },
-  // {
-  //   title: "Settings",
-  //   url: "/page/settings",
-  //   iosIcon: settingsOutline,
-  //   mdIcon: settingsSharp,
-  // },
 ]
 
 type Props = {
@@ -82,6 +75,7 @@ type Props = {
 const Menu: React.FC<Props> = ({ dispatch, user }) => {
   const location = useLocation()
   const history = useHistory()
+  const [alertOpen, setAlertOpen] = useState(false)
 
   async function handleSignout() {
     await dispatch(doSignout())
@@ -132,24 +126,35 @@ const Menu: React.FC<Props> = ({ dispatch, user }) => {
               <IonIcon slot="start" ios={personOutline} md={personSharp} />
               <IonLabel>Account</IonLabel>
             </IonItem>
-            {/* <IonItem
-              routerLink="/page/settings"
-              routerDirection="none"
-              className={
-                location.pathname === "/page/settings" ? "selected" : null
-              }
+            <IonItem
               detail={false}
               lines="none"
+              onClick={(e) => {
+                e.preventDefault()
+                setAlertOpen(true)
+              }}
             >
-              <IonIcon slot="start" ios={settingsOutline} md={settingsSharp} />
-              <IonLabel>Settings</IonLabel>
-            </IonItem> */}
-            <IonItem detail={false} lines="none" onClick={handleSignout}>
               <IonIcon slot="start" ios={logOutOutline} md={logOutSharp} />
               <IonLabel>Logout</IonLabel>
             </IonItem>
           </IonMenuToggle>
         </IonList>
+        <IonAlert
+          isOpen={alertOpen}
+          onDidDismiss={() => setAlertOpen(false)}
+          header={"Confirm"}
+          message={"Do you want to logout?"}
+          buttons={[
+            {
+              text: "Cancel",
+              role: "cancel",
+            },
+            {
+              text: "Logout",
+              handler: handleSignout,
+            },
+          ]}
+        />
       </IonContent>
     </IonMenu>
   )
