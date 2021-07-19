@@ -18,7 +18,7 @@ import {
   IonItemSliding,
   IonItemOptions,
   IonItemOption,
-  IonNote,
+  IonText,
 } from "@ionic/react"
 import {
   documentTextOutline,
@@ -31,7 +31,7 @@ import {
 } from "ionicons/icons"
 import useDynamicRefs from "use-dynamic-refs"
 import Collapsible from "react-collapsible"
-import { Link, useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import { doFetchCategories } from "../actions/categoryActions"
 
 type Props = {
@@ -130,17 +130,17 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories }) => {
                         </IonItemSliding>
                       ))
                     : null}
-                  <IonItem>
-                    <IonIcon icon={add} slot="start" />
-                    <Link
-                      to={{
+                  <IonItem
+                    onClick={() => {
+                      history.push({
                         pathname: "/lists/new",
                         state: { categoryId: category.id },
-                      }}
-                      style={{ textDecoration: "none" }}
-                    >
-                      New List
-                    </Link>
+                      })
+                    }}
+                    button={true}
+                  >
+                    <IonIcon icon={add} slot="start" />
+                    <IonText color="primary">New List</IonText>
                   </IonItem>
                 </Collapsible>
               ))
