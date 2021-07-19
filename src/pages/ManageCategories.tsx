@@ -12,6 +12,7 @@ import {
   IonList,
   IonItem,
   IonActionSheet,
+  IonAlert,
 } from "@ionic/react"
 import { documentTextOutline, create, trash, close } from "ionicons/icons"
 import { doFetchCategories, doDeleteCategory } from "../actions/categoryActions"
@@ -25,6 +26,7 @@ type Props = {
 const ManageCategories: React.FC<Props> = ({ user, categories, dispatch }) => {
   const history = useHistory()
   const [category, setCategory] = useState(null)
+  const [alertOpen, setAlertOpen] = useState(false)
   const [actionSheetOpen, setActionSheetOpen] = useState(false)
 
   useEffect(() => {
@@ -88,13 +90,7 @@ const ManageCategories: React.FC<Props> = ({ user, categories, dispatch }) => {
               role: "destructive",
               icon: trash,
               handler: () => {
-                dispatch(
-                  doDeleteCategory(
-                    Number(category.id),
-                    user.email,
-                    user.rawPass
-                  )
-                )
+                setAlertOpen(true)
               },
             },
             {
@@ -104,6 +100,32 @@ const ManageCategories: React.FC<Props> = ({ user, categories, dispatch }) => {
             },
           ]}
         ></IonActionSheet>
+        <IonAlert
+          isOpen={alertOpen}
+          onDidDismiss={() => setAlertOpen(false)}
+          header={"Confirm"}
+          message={
+            "Do you want to delete this category? All associated lists will be lost."
+          }
+          buttons={[
+            {
+              text: "Cancel",
+              role: "cancel",
+            },
+            {
+              text: "OK",
+              handler: () => {
+                dispatch(
+                  doDeleteCategory(
+                    Number(category.id),
+                    user.email,
+                    user.rawPass
+                  )
+                )
+              },
+            },
+          ]}
+        />
       </IonContent>
     </IonPage>
   )
