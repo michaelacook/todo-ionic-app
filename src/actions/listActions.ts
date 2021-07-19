@@ -1,9 +1,15 @@
 import { Action } from "../types"
-import { GET, PUT } from "../lib/http"
+import { GET, POST, PUT } from "../lib/http"
+import { doFetchCategories } from "./categoryActions"
 
 export const FETCH_LIST = "FETCH_LIST"
 export const FETCH_LIST_FAIL = "FETCH_LIST_FAIL"
 export const FETCH_LIST_SUCCESS = "FETCH_LIST_SUCCESS"
+
+export const POST_LIST = "POST_LIST"
+export const POST_LIST_FAIL = "POST_LIST_FAIL"
+export const POST_LIST_SUCCESS = "POST_LIST_SUCCESS"
+
 export const UPDATE_LIST = "UPDATE_LIST"
 export const UPDATE_LIST_FAIL = "UPDATE_LIST_FAIL"
 export const UPDATE_LIST_SUCCESS = "UPDATE_LIST_SUCCESS"
@@ -24,6 +30,20 @@ export const fetchListFail = (err): Action => ({
 export const fetchListSuccess = (listItems): Action => ({
   type: FETCH_LIST_SUCCESS,
   payload: listItems,
+})
+
+export const postList = (): Action => ({
+  type: POST_LIST,
+})
+
+export const postListFail = (err): Action => ({
+  type: POST_LIST_FAIL,
+  payload: err,
+})
+
+export const postListSuccess = (list): Action => ({
+  type: POST_LIST_SUCCESS,
+  payload: list,
 })
 
 export const updateList = (): Action => ({
@@ -78,6 +98,32 @@ export function doFetchList(
     } catch (err) {
       dispatch(fetchListFail(err))
     }
+  }
+}
+
+export function doPostList(list, emailAddress: string, password: string) {
+  return async (dispatch) => {
+    dispatch(postList())
+
+    return new Promise((resolve, reject) => {
+      POST("lists", list, {
+        emailAddress,
+        password,
+      }).then((response) => {
+        if (response.status !== 201) {
+          response.json().then((data) => {
+            dispatch(postListFail(data))
+            reject(data)
+          })
+        } else {
+          response.json().then((data) => {
+            dispatch(doFetchCategories(emailAddress, password))
+            dispatch(postListSuccess(data))
+            return resolve(data)
+          })
+        }
+      })
+    })
   }
 }
 

@@ -118,15 +118,13 @@ const Todo: React.FC<Props> = ({ dispatch, error, list, user }) => {
       </IonHeader>
 
       <IonContent>
-        {list ? (
-          !list.ListItems.length ? (
-            <IonNote className="ion-margin-start ion-margin-top">
-              You don't have any list items yet.
-            </IonNote>
-          ) : null
+        {!Object.keys(list).includes("ListItems") || !list.ListItems.length ? (
+          <IonNote className="ion-margin-start ion-margin-top">
+            You don't have any list items yet.
+          </IonNote>
         ) : null}
         <IonList>
-          {list
+          {list && Object.keys(list).includes("ListItems")
             ? list.ListItems.map((item) => (
                 <IonItemSliding key={item.id}>
                   <IonItemOptions side="end">

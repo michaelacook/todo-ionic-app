@@ -130,7 +130,13 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories }) => {
                       ))
                     : null}
                   <IonItem>
-                    <Link to="/lists/new" style={{ textDecoration: "none" }}>
+                    <Link
+                      to={{
+                        pathname: "/lists/new",
+                        state: { categoryId: category.id },
+                      }}
+                      style={{ textDecoration: "none" }}
+                    >
                       New List
                     </Link>
                   </IonItem>
