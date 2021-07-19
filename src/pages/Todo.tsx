@@ -118,10 +118,12 @@ const Todo: React.FC<Props> = ({ dispatch, error, list, user }) => {
       </IonHeader>
 
       <IonContent>
-        {!Object.keys(list).includes("ListItems") || !list.ListItems.length ? (
-          <IonNote className="ion-margin-start ion-margin-top">
-            You don't have any list items yet.
-          </IonNote>
+        {list ? (
+          !Object.keys(list).includes("ListItems") || !list.ListItems.length ? (
+            <IonNote className="ion-margin-start ion-margin-top">
+              You don't have any list items yet.
+            </IonNote>
+          ) : null
         ) : null}
         <IonList>
           {list && Object.keys(list).includes("ListItems")

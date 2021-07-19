@@ -34,6 +34,7 @@ const NewList: React.FC<Props> = ({ dispatch, user, list }) => {
           {
             title,
             categoryId,
+            userId: user.id,
           },
           user.email,
           user.rawPass

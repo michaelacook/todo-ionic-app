@@ -142,6 +142,7 @@ export function doFetchPinned(emailAddress, password) {
       if (response.status !== 200) {
         dispatch(fetchPinnedFail(resData))
       } else {
+        dispatch(doFetchCategories(emailAddress, password))
         dispatch(fetchPinnedSuccess(resData))
       }
     } catch (err) {
