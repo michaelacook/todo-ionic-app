@@ -91,6 +91,7 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories }) => {
             ? categories.map((category, i) => (
                 <Collapsible
                   key={category.id}
+                  transitionTime={100}
                   triggerDisabled={
                     collapsibles[i] ? collapsibles[i]["sliderOpen"] : false
                   }
