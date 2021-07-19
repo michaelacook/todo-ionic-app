@@ -131,6 +131,7 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories }) => {
                       ))
                     : null}
                   <IonItem>
+                    <IonIcon icon={add} slot="start" />
                     <Link
                       to={{
                         pathname: "/lists/new",
