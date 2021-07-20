@@ -62,12 +62,12 @@ const UpdateCategory: React.FC<Props> = ({ dispatch, user }) => {
       </IonHeader>
       <IonContent>
         <IonItem>
-        <IonLabel>Title</IonLabel>
-        <IonInput 
-          inputMode="text"
-          value={title}
-          onIonChange={(e) => setTitle(e.detail.value!)}
-        />
+          <IonLabel>Title</IonLabel>
+          <IonInput
+            inputMode="text"
+            value={title}
+            onIonChange={(e) => setTitle(e.detail.value!)}
+          />
         </IonItem>
         <IonButton onClick={handleUpdateCategory} expand="full" shape="round">
           Save
