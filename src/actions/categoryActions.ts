@@ -1,12 +1,18 @@
 import { Action } from "../types"
-import { GET, POST, DELETE } from "../lib/http"
+import { GET, POST, PUT, DELETE } from "../lib/http"
 
 export const FETCH_CATEGORIES = "FETCH_CATEGORIES"
 export const FETCH_CATEGORIES_FAIL = "FETCH_CATEGORIES_FAIL"
 export const FETCH_CATEGORIES_SUCCESS = "FETCH_CATEGORIES_SUCCESS"
+
 export const POST_CATEGORY = "POST_CATEGORY"
 export const POST_CATEGORY_FAIL = "POST_CATEGORY_FAIL"
 export const POST_CATEGORY_SUCCESS = "POST_CATEGORY_SUCCESS"
+
+export const PUT_CATEGORY = "PUT_CATEGORY"
+export const PUT_CATEGORY_FAIL = "PUT_CATEGORY_FAIL"
+export const PUT_CATEGORY_SUCCESS = "PUT_CATEGORY_SUCCESS"
+
 export const DELETE_CATEGORY = "DELETE_CATEGORY"
 export const DELETE_CATEGORY_FAIL = "DELETE_CATEGORY_FAIL"
 
@@ -35,6 +41,19 @@ export const postCategoryFail = (err): Action => ({
 
 export const postCategorySuccess = (): Action => ({
   type: POST_CATEGORY_SUCCESS,
+})
+
+export const putCategory = (): Action => ({
+  type: PUT_CATEGORY,
+})
+
+export const putCategoryFail = (err): Action => ({
+  type: PUT_CATEGORY_FAIL,
+  payload: err,
+})
+
+export const putCategorySuccess = (): Action => ({
+  type: PUT_CATEGORY_SUCCESS,
 })
 
 export const deleteCategory = (): Action => ({
@@ -93,6 +112,35 @@ export function doPostCategory(
       }
     } catch (err) {
       dispatch(postCategoryFail(err))
+    }
+  }
+}
+
+export function doUpdateCategory(
+  id: number,
+  payload,
+  emailAddress: string,
+  password: string
+) {
+  return async (dispatch) => {
+    dispatch(putCategory())
+
+    try {
+      const response = await PUT(`categories/${id}`, payload, {
+        emailAddress,
+        password,
+      })
+
+      const resData = await response.json()
+
+      if (response.status !== 200) {
+        dispatch(putCategoryFail(resData))
+      } else {
+        dispatch(doFetchCategories(emailAddress, password))
+        dispatch(putCategorySuccess())
+      }
+    } catch (err) {
+      dispatch(putCategoryFail(err))
     }
   }
 }

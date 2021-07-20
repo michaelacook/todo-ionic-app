@@ -83,7 +83,12 @@ const ManageCategories: React.FC<Props> = ({ user, categories, dispatch }) => {
               text: "Edit",
               role: "destructive",
               icon: create,
-              handler: () => null,
+              handler: () => {
+                history.push({
+                  pathname: "/page/categories/edit",
+                  state: { category: category },
+                })
+              },
             },
             {
               text: "Delete",

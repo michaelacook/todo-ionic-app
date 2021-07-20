@@ -33,6 +33,12 @@ export default function categoryReducer(state = initialState, action: Action) {
       return { ...state, loading: false, error: action.payload }
     case actions.FETCH_CATEGORIES_SUCCESS:
       return { ...state, loading: false }
+    case actions.PUT_CATEGORY:
+      return { ...state, loading: true }
+    case actions.PUT_CATEGORY_FAIL:
+      return { ...state, loading: false, error: action.payload }
+    case actions.PUT_CATEGORY_SUCCESS:
+      return { ...state, loading: false }
     case actions.DELETE_CATEGORY:
       return { ...state, loading: true }
     case actions.DELETE_CATEGORY_FAIL:
