@@ -61,6 +61,10 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories, error }) => {
   }, [])
 
   useEffect(() => {
+    setLoading(false)
+  }, [error, categories])
+
+  useEffect(() => {
     setCollapsibles(
       categories
         ? categories.map((cat) => ({
@@ -121,16 +125,15 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories, error }) => {
                         <IonItemSliding key={list.id}>
                           <IonItemOptions side="end">
                             <IonItemOption
-                              onClick={async () => {
+                              onClick={() => {
                                 setLoading(true)
-                                await dispatch(
+                                dispatch(
                                   doDeleteList(
                                     Number(list.id),
                                     user.email,
                                     user.rawPass
                                   )
                                 )
-                                setLoading(false)
                               }}
                               color="danger"
                             >
