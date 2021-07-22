@@ -41,12 +41,18 @@ type Props = {
   categories
   dispatch
   error
+  loading
 }
 
-const Categories: React.FC<Props> = ({ dispatch, user, categories, error }) => {
+const Categories: React.FC<Props> = ({
+  dispatch,
+  user,
+  categories,
+  error,
+  loading,
+}) => {
   const history = useHistory()
   const [getRef, setRef] = useDynamicRefs()
-  const [loading, setLoading] = useState(false)
   const [collapsibles, setCollapsibles] = useState(
     categories
       ? categories.map((cat) => ({
@@ -59,10 +65,6 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories, error }) => {
   useEffect(() => {
     dispatch(doFetchCategories(user.email, user.rawPass))
   }, [])
-
-  useEffect(() => {
-    setLoading(false)
-  }, [error, categories])
 
   useEffect(() => {
     setCollapsibles(
@@ -126,7 +128,6 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories, error }) => {
                           <IonItemOptions side="end">
                             <IonItemOption
                               onClick={() => {
-                                setLoading(true)
                                 dispatch(
                                   doDeleteList(
                                     Number(list.id),
@@ -192,6 +193,7 @@ const mapStateToProps = (state) => ({
   user: state.user.user,
   categories: state.categories.categories,
   error: state.categories.error,
+  loading: state.categories.loading,
 })
 
 export default connect(mapStateToProps)(Categories)
