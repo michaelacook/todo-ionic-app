@@ -22,11 +22,11 @@ type Props = {
   categories
   dispatch
   user
+  loading
 }
 
-const ManageCategories: React.FC<Props> = ({ user, categories, dispatch }) => {
+const ManageCategories: React.FC<Props> = ({ user, loading, categories, dispatch }) => {
   const history = useHistory()
-  const [loading, setLoading] = useState(false)
   const [category, setCategory] = useState(null)
   const [alertOpen, setAlertOpen] = useState(false)
   const [actionSheetOpen, setActionSheetOpen] = useState(false)
@@ -34,10 +34,6 @@ const ManageCategories: React.FC<Props> = ({ user, categories, dispatch }) => {
   useEffect(() => {
     dispatch(doFetchCategories(user.email, user.rawPass))
   }, [])
-
-  useEffect(() => {
-    setLoading(false)
-  }, [categories])
 
   return (
     <IonPage>
@@ -126,7 +122,6 @@ const ManageCategories: React.FC<Props> = ({ user, categories, dispatch }) => {
             {
               text: "OK",
               handler: () => {
-                setLoading(true)
                 dispatch(
                   doDeleteCategory(
                     Number(category.id),
@@ -147,6 +142,7 @@ const ManageCategories: React.FC<Props> = ({ user, categories, dispatch }) => {
 const mapStateToProps = (state) => ({
   categories: state.categories.categories,
   user: state.user.user,
+  loading: state.categories.loading
 })
 
 export default connect(mapStateToProps)(ManageCategories)
