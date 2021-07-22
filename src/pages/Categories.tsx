@@ -120,10 +120,6 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories, error }) => {
                     ? category.Lists.map((list) => (
                         <IonItemSliding key={list.id}>
                           <IonItemOptions side="end">
-                            <IonItemOption color="success">
-                              <IonIcon icon={createSharp} slot="top" />
-                              Edit
-                            </IonItemOption>
                             <IonItemOption
                               onClick={async () => {
                                 setLoading(true)
