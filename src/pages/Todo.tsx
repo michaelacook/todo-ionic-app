@@ -23,7 +23,7 @@ import {
   IonToggle,
 } from "@ionic/react"
 import { connect } from "react-redux"
-import { trash, menuSharp, createSharp } from "ionicons/icons"
+import { trash, menuSharp } from "ionicons/icons"
 import { doFetchList, doUpdateList, updateList } from "../actions/listActions"
 import {
   doUpdateItem,

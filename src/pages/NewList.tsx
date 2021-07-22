@@ -44,7 +44,6 @@ const NewList: React.FC<Props> = ({ dispatch, user, list }) => {
         )
       ).then((data) => {
         setTitle("")
-        setCategoryId(null)
         setLoading(false)
         history.push(`/lists/${data.id}`)
       })

@@ -155,7 +155,10 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories, error }) => {
                     onClick={() => {
                       history.push({
                         pathname: "/lists/new",
-                        state: { categoryId: category.id },
+                        state: {
+                          categoryId: category.id,
+                          prevPath: history.location.pathname,
+                        },
                       })
                     }}
                     button={true}
