@@ -12,6 +12,7 @@ import {
   IonItem,
   IonInput,
   IonLabel,
+  IonLoading,
 } from "@ionic/react"
 import { connect } from "react-redux"
 import { doPostList } from "../actions/listActions"
@@ -24,11 +25,13 @@ type Props = {
 
 const NewList: React.FC<Props> = ({ dispatch, user, list }) => {
   const history = useHistory()
+  const [loading, setLoading] = useState(false)
   const [title, setTitle] = useState("")
   const [categoryId, setCategoryId] = useState(null)
 
   function handlePostList() {
     if (title && categoryId) {
+      setLoading(true)
       dispatch(
         doPostList(
           {
@@ -42,6 +45,7 @@ const NewList: React.FC<Props> = ({ dispatch, user, list }) => {
       ).then((data) => {
         setTitle("")
         setCategoryId(null)
+        setLoading(false)
         history.push(`/lists/${data.id}`)
       })
     }
@@ -76,6 +80,7 @@ const NewList: React.FC<Props> = ({ dispatch, user, list }) => {
         <IonButton onClick={handlePostList} expand="full" shape="round">
           Save
         </IonButton>
+        <IonLoading isOpen={loading} message={"Working..."} />
       </IonContent>
     </IonPage>
   )
