@@ -21,6 +21,7 @@ import {
   IonItemOption,
   IonNote,
   IonToggle,
+  IonLoading,
 } from "@ionic/react"
 import { connect } from "react-redux"
 import { trash, menuSharp } from "ionicons/icons"
@@ -41,7 +42,7 @@ interface Props {
 const Todo: React.FC<Props> = ({ dispatch, error, list, user }) => {
   const { id }: any = useParams()
   const history = useHistory()
-  const [items, setItems] = useState([])
+  const [loading, setLoading] = useState(false)
   const [newItem, setNewItem] = useState("")
   const [newItemComment, setNewItemComment] = useState("")
 
@@ -49,8 +50,13 @@ const Todo: React.FC<Props> = ({ dispatch, error, list, user }) => {
     dispatch(doFetchList(Number(id), user.email, user.rawPass))
   }, [])
 
+  useEffect(() => {
+    setLoading(false)
+  }, [error, list])
+
   function handlePostListItem() {
     if (newItem) {
+      setLoading(true)
       const payload = {
         listId: list.id,
         content: newItem,
@@ -83,6 +89,7 @@ const Todo: React.FC<Props> = ({ dispatch, error, list, user }) => {
   }
 
   function handleDeleteItem(id: number, listId: number) {
+    setLoading(true)
     dispatch(doDeleteItem(id, listId, user.email, user.rawPass))
   }
 
@@ -187,6 +194,7 @@ const Todo: React.FC<Props> = ({ dispatch, error, list, user }) => {
         >
           Add
         </IonButton>
+        <IonLoading isOpen={loading} message={"Working..."} />
       </IonContent>
     </IonPage>
   )
