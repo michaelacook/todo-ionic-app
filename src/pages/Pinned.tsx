@@ -15,6 +15,7 @@ import {
   IonIcon,
   IonLabel,
   IonNote,
+  IonLoading,
 } from "@ionic/react"
 import { heart, documentTextOutline, trash, createSharp } from "ionicons/icons"
 import { connect } from "react-redux"
@@ -77,6 +78,10 @@ const Pinned: React.FC<Props> = ({ dispatch, user, pinned }) => {
             </IonNote>
           </div>
         )}
+        <IonLoading
+          message={"Working..."}
+          isOpen={!pinned.length ? true : false}
+        />
       </IonContent>
     </IonPage>
   )
