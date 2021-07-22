@@ -88,71 +88,72 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories, error }) => {
 
       <IonContent>
         <IonList>
-          {categories ? (
-            categories.map((category, i) => (
-              <Collapsible
-                key={category.id}
-                transitionTime={100}
-                triggerDisabled={
-                  collapsibles[i] ? collapsibles[i]["sliderOpen"] : false
-                }
-                trigger={
-                  <IonItem key={category.title} button>
-                    <IonIcon slot="start" md={folder} />
-                    <IonLabel>{category.title}</IonLabel>
-
-                    <IonIcon slot="end" md={chevronDownSharp} size="small" />
-                  </IonItem>
-                }
-              >
-                {category.Lists
-                  ? category.Lists.map((list) => (
-                      <IonItemSliding key={list.id}>
-                        <IonItemOptions side="end">
-                          <IonItemOption color="success">
-                            <IonIcon icon={createSharp} slot="top" />
-                            Edit
-                          </IonItemOption>
-                          <IonItemOption color="danger">
-                            <IonIcon icon={trash} slot="icon-only" />
-                          </IonItemOption>
-                        </IonItemOptions>
-
-                        <IonItem
-                          button
-                          onClick={() => navigateToList(list)}
-                          detail={true}
-                        >
-                          <IonIcon slot="start" md={documentTextOutline} />
-                          <IonLabel style={{ color: "#73757d" }}>
-                            {list.title}
-                          </IonLabel>
-                        </IonItem>
-                      </IonItemSliding>
-                    ))
-                  : null}
-                <IonItem
-                  onClick={() => {
-                    history.push({
-                      pathname: "/lists/new",
-                      state: { categoryId: category.id },
-                    })
-                  }}
-                  button={true}
-                >
-                  <IonIcon icon={add} slot="start" />
-                  <IonText color="primary">New List</IonText>
-                </IonItem>
-              </Collapsible>
-            ))
-          ) : (
+          {error ? (
             <IonItem>
               <IonText color="danger">
                 Couldn't fetch categories. Check your network connection and try
                 again.
               </IonText>
             </IonItem>
-          )}
+          ) : null}
+          {categories
+            ? categories.map((category, i) => (
+                <Collapsible
+                  key={category.id}
+                  transitionTime={100}
+                  triggerDisabled={
+                    collapsibles[i] ? collapsibles[i]["sliderOpen"] : false
+                  }
+                  trigger={
+                    <IonItem key={category.title} button>
+                      <IonIcon slot="start" md={folder} />
+                      <IonLabel>{category.title}</IonLabel>
+
+                      <IonIcon slot="end" md={chevronDownSharp} size="small" />
+                    </IonItem>
+                  }
+                >
+                  {category.Lists
+                    ? category.Lists.map((list) => (
+                        <IonItemSliding key={list.id}>
+                          <IonItemOptions side="end">
+                            <IonItemOption color="success">
+                              <IonIcon icon={createSharp} slot="top" />
+                              Edit
+                            </IonItemOption>
+                            <IonItemOption color="danger">
+                              <IonIcon icon={trash} slot="icon-only" />
+                            </IonItemOption>
+                          </IonItemOptions>
+
+                          <IonItem
+                            button
+                            onClick={() => navigateToList(list)}
+                            detail={true}
+                          >
+                            <IonIcon slot="start" md={documentTextOutline} />
+                            <IonLabel style={{ color: "#73757d" }}>
+                              {list.title}
+                            </IonLabel>
+                          </IonItem>
+                        </IonItemSliding>
+                      ))
+                    : null}
+                  <IonItem
+                    onClick={() => {
+                      history.push({
+                        pathname: "/lists/new",
+                        state: { categoryId: category.id },
+                      })
+                    }}
+                    button={true}
+                  >
+                    <IonIcon icon={add} slot="start" />
+                    <IonText color="primary">New List</IonText>
+                  </IonItem>
+                </Collapsible>
+              ))
+            : null}
         </IonList>
         <IonFab vertical="bottom" horizontal="center" slot="fixed">
           <IonFabButton
