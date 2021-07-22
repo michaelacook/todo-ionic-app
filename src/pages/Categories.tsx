@@ -19,6 +19,7 @@ import {
   IonItemOptions,
   IonItemOption,
   IonText,
+  IonLoading,
 } from "@ionic/react"
 import {
   documentTextOutline,
@@ -45,6 +46,7 @@ type Props = {
 const Categories: React.FC<Props> = ({ dispatch, user, categories, error }) => {
   const history = useHistory()
   const [getRef, setRef] = useDynamicRefs()
+  const [loading, setLoading] = useState(false)
   const [collapsibles, setCollapsibles] = useState(
     categories
       ? categories.map((cat) => ({
@@ -123,14 +125,16 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories, error }) => {
                               Edit
                             </IonItemOption>
                             <IonItemOption
-                              onClick={() => {
-                                dispatch(
+                              onClick={async () => {
+                                setLoading(true)
+                                await dispatch(
                                   doDeleteList(
                                     Number(list.id),
                                     user.email,
                                     user.rawPass
                                   )
                                 )
+                                setLoading(false)
                               }}
                               color="danger"
                             >
@@ -176,6 +180,7 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories, error }) => {
             <IonIcon md={add} />
           </IonFabButton>
         </IonFab>
+        <IonLoading isOpen={loading} message={"Working..."} />
       </IonContent>
     </IonPage>
   )
