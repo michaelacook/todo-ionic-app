@@ -33,6 +33,7 @@ import useDynamicRefs from "use-dynamic-refs"
 import Collapsible from "react-collapsible"
 import { useHistory } from "react-router-dom"
 import { doFetchCategories } from "../actions/categoryActions"
+import { doDeleteList } from "../actions/listActions"
 
 type Props = {
   user
@@ -121,7 +122,18 @@ const Categories: React.FC<Props> = ({ dispatch, user, categories, error }) => {
                               <IonIcon icon={createSharp} slot="top" />
                               Edit
                             </IonItemOption>
-                            <IonItemOption color="danger">
+                            <IonItemOption
+                              onClick={() => {
+                                dispatch(
+                                  doDeleteList(
+                                    Number(list.id),
+                                    user.email,
+                                    user.rawPass
+                                  )
+                                )
+                              }}
+                              color="danger"
+                            >
                               <IonIcon icon={trash} slot="icon-only" />
                             </IonItemOption>
                           </IonItemOptions>

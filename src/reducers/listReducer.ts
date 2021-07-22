@@ -37,6 +37,12 @@ export default function listReducer(state = initialState, action: Action) {
       return { ...state, error: action.payload }
     case actions.FETCH_PINNED_SUCCESS:
       return { ...state, pinned: action.payload }
+    case actions.DELETE_LIST:
+      return { ...state, error: null }
+    case actions.DELETE_LIST_FAIL:
+      return { ...state, error: action.payload }
+    case actions.DELETE_LIST_SUCCESS:
+      return { ...state, error: null }
     default:
       return state
   }

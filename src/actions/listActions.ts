@@ -1,5 +1,5 @@
 import { Action } from "../types"
-import { GET, POST, PUT } from "../lib/http"
+import { GET, POST, PUT, DELETE } from "../lib/http"
 import { doFetchCategories } from "./categoryActions"
 
 export const FETCH_LIST = "FETCH_LIST"
@@ -17,6 +17,10 @@ export const UPDATE_LIST_SUCCESS = "UPDATE_LIST_SUCCESS"
 export const FETCH_PINNED = "FETCH_PINNED"
 export const FETCH_PINNED_FAIL = "FETCH_PINNED_FAIL"
 export const FETCH_PINNED_SUCCESS = "FETCH_PINNED_SUCCESS"
+
+export const DELETE_LIST = "DELETE_LIST"
+export const DELETE_LIST_FAIL = "DELETE_LIST_FAIL"
+export const DELETE_LIST_SUCCESS = "DELETE_LIST_SUCCESS"
 
 export const fetchList = (): Action => ({
   type: FETCH_LIST,
@@ -72,6 +76,19 @@ export const fetchPinnedFail = (err): Action => ({
 export const fetchPinnedSuccess = (pinned): Action => ({
   type: FETCH_PINNED_SUCCESS,
   payload: pinned,
+})
+
+export const deleteList = (): Action => ({
+  type: DELETE_LIST,
+})
+
+export const deleteListFail = (err): Action => ({
+  type: DELETE_LIST_FAIL,
+  payload: err,
+})
+
+export const deleteListSuccess = (): Action => ({
+  type: DELETE_LIST_SUCCESS,
 })
 
 export function doFetchList(
@@ -172,6 +189,28 @@ export function doUpdateList(id: number, payload, emailAddress, password) {
       }
     } catch (err) {
       dispatch(updateListFail(err))
+    }
+  }
+}
+
+export function doDeleteList(
+  id: number,
+  emailAddress: string,
+  password: string
+) {
+  return async (dispatch) => {
+    dispatch(deleteList())
+
+    try {
+      await DELETE(`lists/${id}`, {
+        emailAddress,
+        password,
+      })
+
+      dispatch(doFetchCategories(emailAddress, password))
+      dispatch(deleteListSuccess())
+    } catch (err) {
+      dispatch(deleteListFail(err))
     }
   }
 }

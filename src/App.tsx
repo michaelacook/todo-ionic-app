@@ -1,6 +1,11 @@
-import { IonApp, IonRouterOutlet, IonSplitPane } from "@ionic/react"
+import {
+  IonApp,
+  IonRouterOutlet,
+  IonSplitPane,
+  useIonViewDidEnter,
+} from "@ionic/react"
 import { IonReactRouter } from "@ionic/react-router"
-import { Switch, Redirect, Route } from "react-router-dom"
+import { useHistory, Redirect, Route } from "react-router-dom"
 import Menu from "./components/Menu"
 import Signup from "./pages/Signup"
 import Login from "./pages/Login"
@@ -41,6 +46,12 @@ type Props = {
 }
 
 const App: React.FC<Props> = ({ user }) => {
+  const history = useHistory()
+
+  useIonViewDidEnter(() => {
+    history.push("/page/categories")
+  })
+
   return (
     <IonApp>
       <IonReactRouter>
