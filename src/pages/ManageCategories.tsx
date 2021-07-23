@@ -116,9 +116,7 @@ const ManageCategories: React.FC<Props> = ({
           isOpen={alertOpen}
           onDidDismiss={() => setAlertOpen(false)}
           header={"Confirm"}
-          message={
-            "Do you want to delete this category? All associated lists will be lost."
-          }
+          message={"Are you sure? All associated lists will be lost."}
           buttons={[
             {
               text: "Cancel",
