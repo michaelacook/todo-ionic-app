@@ -25,7 +25,12 @@ type Props = {
   loading
 }
 
-const ManageCategories: React.FC<Props> = ({ user, loading, categories, dispatch }) => {
+const ManageCategories: React.FC<Props> = ({
+  user,
+  loading,
+  categories,
+  dispatch,
+}) => {
   const history = useHistory()
   const [category, setCategory] = useState(null)
   const [alertOpen, setAlertOpen] = useState(false)
@@ -142,7 +147,7 @@ const ManageCategories: React.FC<Props> = ({ user, loading, categories, dispatch
 const mapStateToProps = (state) => ({
   categories: state.categories.categories,
   user: state.user.user,
-  loading: state.categories.loading
+  loading: state.categories.loading,
 })
 
 export default connect(mapStateToProps)(ManageCategories)

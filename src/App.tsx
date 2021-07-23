@@ -49,7 +49,9 @@ const App: React.FC<Props> = ({ user }) => {
   const history = useHistory()
 
   useIonViewDidEnter(() => {
-    history.push("/page/categories")
+    if (user) {
+      history.push("/page/categories")
+    }
   })
 
   return (
@@ -88,7 +90,6 @@ const App: React.FC<Props> = ({ user }) => {
         </PrivateComponent>
         <Route exact={true} path="/login" component={Login} />
         <Route exact={true} path="/signup" component={Signup} />
-        <Route render={() => <Redirect to="/page/categories" />} />
       </IonReactRouter>
     </IonApp>
   )
