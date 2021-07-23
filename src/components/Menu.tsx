@@ -61,7 +61,7 @@ const appPages: AppPage[] = [
 const bottomAppPages: AppPage[] = [
   {
     title: "Account",
-    url: "/page/account",
+    url: "/account",
     iosIcon: personOutline,
     mdIcon: personSharp,
   },
@@ -115,11 +115,9 @@ const Menu: React.FC<Props> = ({ dispatch, user }) => {
         <IonList id="labels-list">
           <IonMenuToggle autoHide={false}>
             <IonItem
-              routerLink="/page/account"
+              routerLink="/account"
               routerDirection="none"
-              className={
-                location.pathname === "/page/account" ? "selected" : null
-              }
+              className={location.pathname === "/account" ? "selected" : null}
               detail={false}
               lines="none"
             >

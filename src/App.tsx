@@ -1,6 +1,7 @@
 import { IonApp, IonRouterOutlet, IonSplitPane } from "@ionic/react"
 import { IonReactRouter } from "@ionic/react-router"
 import { useHistory, Redirect, Route } from "react-router-dom"
+import Account from "./pages/Account"
 import Menu from "./components/Menu"
 import Signup from "./pages/Signup"
 import Login from "./pages/Login"
@@ -53,6 +54,7 @@ const App: React.FC<Props> = ({ user }) => {
           <IonSplitPane contentId="main">
             <Menu />
             <IonRouterOutlet id="main">
+              <Route path="/account" exact={true} component={Account} />
               <Route
                 path="/page/categories"
                 exact={true}
