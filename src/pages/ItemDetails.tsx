@@ -67,7 +67,9 @@ const ItemDetails: React.FC<Props> = ({ dispatch, user, item }) => {
             </IonGrid>
 
             <h4>Comments:</h4>
-            <IonNote style={{ lineHeight: "1.6" }}>{item.comments}</IonNote>
+            <IonNote style={{ lineHeight: "1.6", padding: "0 5px" }}>
+              {item.comments}
+            </IonNote>
           </div>
         ) : null}
       </IonContent>
