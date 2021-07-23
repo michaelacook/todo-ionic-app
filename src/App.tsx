@@ -1,9 +1,4 @@
-import {
-  IonApp,
-  IonRouterOutlet,
-  IonSplitPane,
-  useIonViewDidEnter,
-} from "@ionic/react"
+import { IonApp, IonRouterOutlet, IonSplitPane } from "@ionic/react"
 import { IonReactRouter } from "@ionic/react-router"
 import { useHistory, Redirect, Route } from "react-router-dom"
 import Menu from "./components/Menu"
@@ -48,15 +43,12 @@ type Props = {
 const App: React.FC<Props> = ({ user }) => {
   const history = useHistory()
 
-  useIonViewDidEnter(() => {
-    if (user) {
-      history.push("/page/categories")
-    }
-  })
-
   return (
     <IonApp>
       <IonReactRouter>
+        <Route exact={true} path="/">
+          <Redirect to="/page/categories" />
+        </Route>
         <PrivateComponent user={user}>
           <IonSplitPane contentId="main">
             <Menu />
