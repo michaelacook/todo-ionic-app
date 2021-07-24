@@ -9,11 +9,13 @@ import {
   IonToolbar,
   IonButtons,
   IonMenuButton,
+  IonModal,
   IonLoading,
   IonLabel,
   IonList,
   IonItem,
   IonInput,
+  IonText,
 } from "@ionic/react"
 import { doUpdateAccount } from "../actions/authActions"
 
@@ -25,12 +27,22 @@ type Props = {
 
 const Account: React.FC<Props> = ({ dispatch, user, loading }) => {
   const [edit, setEdit] = useState(false)
+  const [confirmDeleteAccount, setConfirmDeleteAccount] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPass, setConfirmPass] = useState("")
   const [lastUpdated, setLastUpdated] = useState("")
+
+  function handleConfirmDeleteAccount(password: string) {
+    if (password === user.rawPass) {
+      setConfirmDeleteAccount(true)
+    } else {
+      setConfirmDeleteAccount(false)
+    }
+  }
 
   function handleUpdateAccount() {
     dispatch(
@@ -53,6 +65,7 @@ const Account: React.FC<Props> = ({ dispatch, user, loading }) => {
     setLastName(user.lastName)
     setEmail(user.email)
     setPassword(user.rawPass)
+    setConfirmPass(user.rawPass)
     setLastUpdated(user.updatedAt)
   }, [user])
 
@@ -109,7 +122,7 @@ const Account: React.FC<Props> = ({ dispatch, user, loading }) => {
                 onIonChange={(e) => setConfirmPass(e.detail.value!)}
                 disabled={!edit}
                 type="password"
-                value={confirmPass || password}
+                value={confirmPass}
               ></IonInput>
             </IonItem>
           ) : null}
@@ -131,6 +144,59 @@ const Account: React.FC<Props> = ({ dispatch, user, loading }) => {
         >
           {edit ? "Save" : "Edit"}
         </IonButton>
+        <IonButton
+          onClick={() => setShowModal(true)}
+          color="danger"
+          expand="full"
+          shape="round"
+          style={{
+            marginTop: "8px",
+          }}
+        >
+          Delete Account
+        </IonButton>
+        <IonModal isOpen={showModal}>
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>Delete Account</IonTitle>
+              <IonButtons slot="end">
+                <IonButton onClick={() => setShowModal(false)}>
+                  Cancel
+                </IonButton>
+              </IonButtons>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent className="ion-padding">
+            <IonText>
+              <p>
+                This action <strong>cannot</strong> be undone. This will
+                permanently delete your account and all associated data.{" "}
+              </p>
+            </IonText>
+
+            <IonInput
+              type="password"
+              placeholder="Password"
+              autofocus={true}
+              className="ion-margin-top"
+              onIonChange={(e) => handleConfirmDeleteAccount(e.detail.value!)}
+            ></IonInput>
+
+            <IonText>
+              <p className="ion-margin-top">
+                Please type your password to confirm.
+              </p>
+            </IonText>
+
+            <IonButton
+              disabled={!confirmDeleteAccount}
+              color="danger"
+              expand="full"
+            >
+              I understand, delete my account
+            </IonButton>
+          </IonContent>
+        </IonModal>
         <IonLoading isOpen={loading} message={"Working..."} />
       </IonContent>
     </IonPage>
