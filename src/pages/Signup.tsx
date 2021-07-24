@@ -16,7 +16,6 @@ import {
 } from "@ionic/react"
 
 import { connect } from "react-redux"
-import { User } from "../types"
 import { doCreateAccount } from "../actions/authActions"
 
 interface Props {
@@ -204,7 +203,6 @@ const Signup: React.FC<Props> = ({ dispatch, loading, error, user }) => {
 
 const mapStateToProps = (state: Props) => ({
   loading: state.user.loading,
-  hasErrors: state.user.hasErrors,
   user: state.user.user,
   error: state.user.error,
 })
