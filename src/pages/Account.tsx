@@ -15,6 +15,7 @@ import {
   IonItem,
   IonInput,
 } from "@ionic/react"
+import { doUpdateAccount } from "../actions/authActions"
 
 type Props = {
   dispatch
@@ -30,6 +31,22 @@ const Account: React.FC<Props> = ({ dispatch, user, loading }) => {
   const [password, setPassword] = useState("")
   const [confirmPass, setConfirmPass] = useState("")
   const [lastUpdated, setLastUpdated] = useState("")
+
+  function handleUpdateAccount() {
+    dispatch(
+      doUpdateAccount(
+        Number(user.id),
+        {
+          firstName,
+          lastName,
+          email,
+          password,
+        },
+        user.email,
+        user.rawPass
+      )
+    )
+  }
 
   useEffect(() => {
     setFirstName(user.firstName)
@@ -102,7 +119,12 @@ const Account: React.FC<Props> = ({ dispatch, user, loading }) => {
           </IonItem>
         </IonList>
         <IonButton
-          onClick={() => setEdit(!edit)}
+          onClick={() => {
+            if (edit) {
+              handleUpdateAccount()
+            }
+            setEdit(!edit)
+          }}
           color="primary"
           expand="full"
           shape="round"

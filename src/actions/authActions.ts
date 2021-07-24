@@ -1,14 +1,19 @@
 import { Action, User } from "../types"
-import { GET, POST } from "../lib/http"
+import { GET, POST, PUT } from "../lib/http"
 import API from "../api"
 
 export const SIGN_IN = "SIGN_IN"
 export const SIGN_IN_SUCCESS = "SIGN_IN_SUCCESS"
 export const SIGN_IN_FAIL = "SIGN_IN_FAIL"
 export const SIGN_OUT = "SIGN_OUT"
+
 export const CREATE_ACCOUNT = "CREATE_ACCOUNT"
 export const CREATE_ACCOUNT_SUCCESS = "CREATE_ACCOUNT_SUCCESS"
 export const CREATE_ACCOUNT_FAIL = "CREATE_ACCOUNT_FAIL"
+
+export const UPDATE_ACCOUNT = "UPDATE_ACCOUNT"
+export const UPDATE_ACCOUNT_FAIL = "UPDATE_ACCOUNT_FAIL"
+export const UPDATE_ACCOUNT_SUCCESS = "UPDATE_ACCOUNT_SUCCESS"
 
 export const signin = (): Action => ({
   type: SIGN_IN,
@@ -41,6 +46,53 @@ export const createAccountFail = (err): Action => ({
   type: CREATE_ACCOUNT_FAIL,
   payload: err,
 })
+
+export const updateAccount = (): Action => ({
+  type: UPDATE_ACCOUNT,
+})
+
+export const updateAccountFail = (err): Action => ({
+  type: UPDATE_ACCOUNT_FAIL,
+  payload: err,
+})
+
+export const updateAccountSuccess = (user) => ({
+  type: UPDATE_ACCOUNT_SUCCESS,
+  payload: user,
+})
+
+export function doUpdateAccount(
+  userId: number,
+  data,
+  emailAddress: string,
+  password: string
+) {
+  return async (dispatch) => {
+    dispatch(updateAccount())
+
+    try {
+      const response = await PUT(`users/${userId}`, data, {
+        emailAddress,
+        password,
+      })
+
+      const resData = await response.json()
+      if (response.status !== 200) {
+        dispatch(updateAccountFail(resData))
+      } else {
+        resData.rawPass = data.password
+
+        if (localStorage.getItem("user")) {
+          localStorage.setItem("user", JSON.stringify(resData))
+        }
+
+        dispatch(updateAccountSuccess(resData))
+      }
+    } catch (err) {
+      dispatch(updateAccountFail(err))
+    }
+  }
+}
 
 export function doCreateAccount(data: User, cache = false) {
   return async (dispatch) => {
