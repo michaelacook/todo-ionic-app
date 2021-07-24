@@ -12,6 +12,7 @@ import {
   IonList,
   IonItem,
   IonRouterLink,
+  IonLoading,
 } from "@ionic/react"
 
 import { connect } from "react-redux"
@@ -128,6 +129,7 @@ const Login: React.FC<Props> = ({ dispatch, user, loading, error }) => {
             <IonRouterLink routerLink="/signup">Sign up</IonRouterLink>
           </IonText>
         </div>
+        <IonLoading isOpen={loading} message={"Logging in..."} />
       </IonContent>
     </React.Fragment>
   )
