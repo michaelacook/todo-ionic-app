@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { connect } from "react-redux"
 import {
-  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
@@ -26,8 +25,6 @@ import {
   folder,
   add,
   trash,
-  createSharp,
-  chevronUpSharp,
   chevronDownSharp,
 } from "ionicons/icons"
 import useDynamicRefs from "use-dynamic-refs"
@@ -80,7 +77,6 @@ const Categories: React.FC<Props> = ({
   }, [categories])
 
   function navigateToList(list) {
-    const { ListItems } = list
     history.push(`/lists/${list.id}`)
   }
 

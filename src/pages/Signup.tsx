@@ -19,20 +19,13 @@ import { User } from "../types"
 import { doCreateAccount } from "../actions/authActions"
 
 interface Props {
-  user: any
-  hasErrors: boolean
-  error: { message: string }
-  loading: boolean
-  dispatch: any
+  user
+  error
+  loading
+  dispatch
 }
 
-const Signup: React.FC<Props> = ({
-  dispatch,
-  loading,
-  hasErrors,
-  error,
-  user,
-}) => {
+const Signup: React.FC<Props> = ({ dispatch, loading, error, user }) => {
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")

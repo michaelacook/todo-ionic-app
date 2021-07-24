@@ -1,7 +1,6 @@
 import React, { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import {
-  IonButton,
   IonPage,
   IonContent,
   IonHeader,
@@ -40,15 +39,6 @@ const ItemDetails: React.FC<Props> = ({ dispatch, user, item }) => {
             <IonBackButton />
           </IonButtons>
           <IonTitle>Details</IonTitle>
-
-          {/* <IonButton
-            color="tertiary"
-            className="ion-margin-end"
-            size="small"
-            slot="end"
-          >
-            Edit
-          </IonButton> */}
         </IonToolbar>
       </IonHeader>
       <IonContent>

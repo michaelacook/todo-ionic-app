@@ -25,7 +25,7 @@ import {
 } from "@ionic/react"
 import { connect } from "react-redux"
 import { trash, menuSharp } from "ionicons/icons"
-import { doFetchList, doUpdateList, updateList } from "../actions/listActions"
+import { doFetchList, doUpdateList } from "../actions/listActions"
 import {
   doUpdateItem,
   doPostListItem,

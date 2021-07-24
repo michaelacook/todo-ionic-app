@@ -26,13 +26,7 @@ type Props = {
   dispatch
 }
 
-const Login: React.FC<Props> = ({
-  dispatch,
-  user,
-  loading,
-  hasErrors,
-  error,
-}) => {
+const Login: React.FC<Props> = ({ dispatch, user, loading, error }) => {
   const history = useHistory()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -142,7 +136,6 @@ const Login: React.FC<Props> = ({
 const mapStateToProps = (state) => ({
   user: state.user.user,
   loading: state.user.loading,
-  hasErrors: state.user.hasErrors,
   error: state.user.error,
 })
 
