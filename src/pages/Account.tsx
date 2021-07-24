@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import { useHistory } from "react-router-dom"
 import { connect } from "react-redux"
 import {
   IonButton,
@@ -17,7 +18,7 @@ import {
   IonInput,
   IonText,
 } from "@ionic/react"
-import { doUpdateAccount } from "../actions/authActions"
+import { doUpdateAccount, doDeleteAccount } from "../actions/authActions"
 
 type Props = {
   dispatch
@@ -26,6 +27,7 @@ type Props = {
 }
 
 const Account: React.FC<Props> = ({ dispatch, user, loading }) => {
+  const history = useHistory()
   const [edit, setEdit] = useState(false)
   const [confirmDeleteAccount, setConfirmDeleteAccount] = useState(false)
   const [showModal, setShowModal] = useState(false)
@@ -58,6 +60,10 @@ const Account: React.FC<Props> = ({ dispatch, user, loading }) => {
         user.rawPass
       )
     )
+  }
+
+  function handleDeleteAccount() {
+    dispatch(doDeleteAccount(Number(user.id), user.email, user.rawPass))
   }
 
   useEffect(() => {
@@ -192,6 +198,7 @@ const Account: React.FC<Props> = ({ dispatch, user, loading }) => {
               disabled={!confirmDeleteAccount}
               color="danger"
               expand="full"
+              onClick={handleDeleteAccount}
             >
               I understand, delete my account
             </IonButton>

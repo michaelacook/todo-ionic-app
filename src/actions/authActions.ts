@@ -1,5 +1,5 @@
 import { Action, User } from "../types"
-import { GET, POST, PUT } from "../lib/http"
+import { GET, POST, PUT, DELETE } from "../lib/http"
 import API from "../api"
 
 export const SIGN_IN = "SIGN_IN"
@@ -14,6 +14,10 @@ export const CREATE_ACCOUNT_FAIL = "CREATE_ACCOUNT_FAIL"
 export const UPDATE_ACCOUNT = "UPDATE_ACCOUNT"
 export const UPDATE_ACCOUNT_FAIL = "UPDATE_ACCOUNT_FAIL"
 export const UPDATE_ACCOUNT_SUCCESS = "UPDATE_ACCOUNT_SUCCESS"
+
+export const DELETE_ACCOUNT = "DELETE_ACCOUNT"
+export const DELETE_ACCOUNT_FAIL = "DELETE_ACCOUNT_FAIL"
+export const DELETE_ACCOUNT_SUCCESS = "DELETE_ACCOUNT_SUCCESS"
 
 export const signin = (): Action => ({
   type: SIGN_IN,
@@ -61,38 +65,18 @@ export const updateAccountSuccess = (user) => ({
   payload: user,
 })
 
-export function doUpdateAccount(
-  userId: number,
-  data,
-  emailAddress: string,
-  password: string
-) {
-  return async (dispatch) => {
-    dispatch(updateAccount())
+export const deleteAccount = (): Action => ({
+  type: DELETE_ACCOUNT,
+})
 
-    try {
-      const response = await PUT(`users/${userId}`, data, {
-        emailAddress,
-        password,
-      })
+export const deleteAccountFail = (err): Action => ({
+  type: DELETE_ACCOUNT_FAIL,
+  payload: err,
+})
 
-      const resData = await response.json()
-      if (response.status !== 200) {
-        dispatch(updateAccountFail(resData))
-      } else {
-        resData.rawPass = data.password
-
-        if (localStorage.getItem("user")) {
-          localStorage.setItem("user", JSON.stringify(resData))
-        }
-
-        dispatch(updateAccountSuccess(resData))
-      }
-    } catch (err) {
-      dispatch(updateAccountFail(err))
-    }
-  }
-}
+export const deleteAccountSuccess = (): Action => ({
+  type: DELETE_ACCOUNT_SUCCESS,
+})
 
 export function doCreateAccount(data: User, cache = false) {
   return async (dispatch) => {
@@ -152,5 +136,60 @@ export function doSignout() {
 
   return async (dispatch) => {
     dispatch(signout())
+  }
+}
+
+export function doUpdateAccount(
+  userId: number,
+  data,
+  emailAddress: string,
+  password: string
+) {
+  return async (dispatch) => {
+    dispatch(updateAccount())
+
+    try {
+      const response = await PUT(`users/${userId}`, data, {
+        emailAddress,
+        password,
+      })
+
+      const resData = await response.json()
+      if (response.status !== 200) {
+        dispatch(updateAccountFail(resData))
+      } else {
+        resData.rawPass = data.password
+
+        if (localStorage.getItem("user")) {
+          localStorage.setItem("user", JSON.stringify(resData))
+        }
+
+        dispatch(updateAccountSuccess(resData))
+      }
+    } catch (err) {
+      dispatch(updateAccountFail(err))
+    }
+  }
+}
+
+export function doDeleteAccount(
+  userId: number,
+  emailAddress: string,
+  password: string
+) {
+  return async (dispatch) => {
+    dispatch(deleteAccount())
+
+    try {
+      await DELETE(`users/${userId}`, {
+        emailAddress,
+        password,
+      })
+
+      dispatch(deleteAccountSuccess())
+      dispatch(doSignout())
+    } catch (err) {
+      dispatch(deleteAccountFail(err))
+    }
   }
 }
