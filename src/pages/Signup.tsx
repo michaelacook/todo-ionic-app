@@ -12,6 +12,7 @@ import {
   IonList,
   IonItem,
   IonRouterLink,
+  IonLoading,
 } from "@ionic/react"
 
 import { connect } from "react-redux"
@@ -196,6 +197,7 @@ const Signup: React.FC<Props> = ({ dispatch, loading, error, user }) => {
           </IonText>
         </div>
       </IonContent>
+      <IonLoading isOpen={loading} message={"Creating account..."} />
     </React.Fragment>
   )
 }
