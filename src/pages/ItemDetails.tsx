@@ -41,14 +41,14 @@ const ItemDetails: React.FC<Props> = ({ dispatch, user, item }) => {
           </IonButtons>
           <IonTitle>Details</IonTitle>
 
-          <IonButton
+          {/* <IonButton
             color="tertiary"
             className="ion-margin-end"
             size="small"
             slot="end"
           >
             Edit
-          </IonButton>
+          </IonButton> */}
         </IonToolbar>
       </IonHeader>
       <IonContent>
