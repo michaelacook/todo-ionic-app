@@ -47,19 +47,26 @@ const Account: React.FC<Props> = ({ dispatch, user, loading }) => {
   }
 
   function handleUpdateAccount() {
-    dispatch(
-      doUpdateAccount(
-        Number(user.id),
-        {
-          firstName,
-          lastName,
-          email,
-          password,
-        },
-        user.email,
-        user.rawPass
+    if (
+      firstName !== user.firstName ||
+      lastName !== user.lastName ||
+      email !== user.email ||
+      password !== user.rawPass
+    ) {
+      dispatch(
+        doUpdateAccount(
+          Number(user.id),
+          {
+            firstName,
+            lastName,
+            email,
+            password,
+          },
+          user.email,
+          user.rawPass
+        )
       )
-    )
+    }
   }
 
   function handleDeleteAccount() {
