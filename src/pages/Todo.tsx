@@ -22,6 +22,7 @@ import {
   IonNote,
   IonToggle,
   IonLoading,
+  IonText,
 } from "@ionic/react"
 import { connect } from "react-redux"
 import { trash, menuSharp } from "ionicons/icons"
@@ -130,7 +131,14 @@ const Todo: React.FC<Props> = ({ dispatch, error, list, user }) => {
             <IonNote className="ion-margin-start ion-margin-top">
               You don't have any list items yet.
             </IonNote>
-          ) : null
+          ) : (
+            <IonText>
+              <p className="ion-margin-start" style={{ marginBottom: "0" }}>
+                {list.ListItems.filter((item) => item.complete).length} of{" "}
+                {list.ListItems.length} complete
+              </p>
+            </IonText>
+          )
         ) : null}
         <IonList>
           {list && Object.keys(list).includes("ListItems")

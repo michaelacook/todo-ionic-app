@@ -53,7 +53,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "prettier --write --no-semi .",
-    "create-android-mobile": "ionic build && ionic cap add android"
+    "create-android-mobile": "ionic build && ionic cap add android",
+    "delete-android-mobile": "rm -r android build",
+    "new-android-mobile": "npm run delete-android-mobile && create-android-mobile"
   },
   "eslintConfig": {
     "extends": [
