@@ -8,7 +8,7 @@ To run the app on your location machine:
 
 `git clone https://github.com/michaelacook/todo-ionic-app.git && npm install` then run `ionic serve`
 
-To install the app to a android mobile device, open `/android` in android studio and emulate or push to a device.
+To install the app to an android mobile device, open `/android` in Android Studio and emulate or push to a device.
 
 ## Technologies
 
