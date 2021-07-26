@@ -34,7 +34,7 @@ const ItemDetails: React.FC<Props> = ({ dispatch, user, item }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="primary">
           <IonButtons slot="start">
             <IonBackButton />
           </IonButtons>

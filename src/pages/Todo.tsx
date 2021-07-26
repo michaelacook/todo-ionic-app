@@ -109,13 +109,14 @@ const Todo: React.FC<Props> = ({ dispatch, error, list, user }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="primary">
           <IonButtons slot="start">
             <IonBackButton />
           </IonButtons>
-          <IonItem slot="end" lines="none">
+          <IonItem slot="end" lines="none" color="primary">
             <IonLabel>Pinned</IonLabel>
             <IonToggle
+              color="light"
               checked={list ? list.pinned : false}
               onClick={handlePinList}
             ></IonToggle>

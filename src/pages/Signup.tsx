@@ -98,7 +98,7 @@ const Signup: React.FC<Props> = ({ dispatch, loading, error, user }) => {
   return (
     <React.Fragment>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="primary">
           <IonTitle>Signup</IonTitle>
         </IonToolbar>
       </IonHeader>

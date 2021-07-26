@@ -71,7 +71,7 @@ const Login: React.FC<Props> = ({ dispatch, user, loading, error }) => {
   return (
     <React.Fragment>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="primary">
           <IonTitle>Login</IonTitle>
         </IonToolbar>
       </IonHeader>

@@ -60,7 +60,7 @@ const NewList: React.FC<Props> = ({ dispatch, user, list }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="primary">
           <IonButtons slot="start">
             <IonBackButton />
           </IonButtons>

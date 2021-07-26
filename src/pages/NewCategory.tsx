@@ -38,7 +38,7 @@ const NewCategory: React.FC<Props> = ({ dispatch, user }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="primary">
           <IonButtons slot="start">
             <IonBackButton />
           </IonButtons>
