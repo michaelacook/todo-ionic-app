@@ -170,7 +170,7 @@ const Account: React.FC<Props> = ({ dispatch, user, loading }) => {
         </IonButton>
         <IonModal isOpen={showModal}>
           <IonHeader>
-            <IonToolbar>
+            <IonToolbar color="primary">
               <IonTitle>Delete Account</IonTitle>
               <IonButtons slot="end">
                 <IonButton onClick={() => setShowModal(false)}>
