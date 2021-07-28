@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { useHistory } from "react-router"
 import { connect } from "react-redux"
 import {
@@ -14,6 +14,8 @@ import {
   IonActionSheet,
   IonAlert,
   IonLoading,
+  IonText,
+  useIonViewDidEnter,
 } from "@ionic/react"
 import { documentTextOutline, create, trash, close } from "ionicons/icons"
 import { doFetchCategories, doDeleteCategory } from "../actions/categoryActions"
@@ -23,11 +25,13 @@ type Props = {
   dispatch
   user
   loading
+  error
 }
 
 const ManageCategories: React.FC<Props> = ({
   user,
   loading,
+  error,
   categories,
   dispatch,
 }) => {
@@ -36,7 +40,7 @@ const ManageCategories: React.FC<Props> = ({
   const [alertOpen, setAlertOpen] = useState(false)
   const [actionSheetOpen, setActionSheetOpen] = useState(false)
 
-  useEffect(() => {
+  useIonViewDidEnter(() => {
     dispatch(doFetchCategories(user.email, user.rawPass))
   }, [])
 
@@ -51,6 +55,11 @@ const ManageCategories: React.FC<Props> = ({
         </IonToolbar>
       </IonHeader>
       <IonContent>
+        {error ? (
+          <IonItem>
+            <IonText color="danger">{error}</IonText>
+          </IonItem>
+        ) : null}
         <IonList>
           {categories
             ? categories.map((category) => (
@@ -146,6 +155,7 @@ const mapStateToProps = (state) => ({
   categories: state.categories.categories,
   user: state.user.user,
   loading: state.categories.loading,
+  error: state.categories.error,
 })
 
 export default connect(mapStateToProps)(ManageCategories)

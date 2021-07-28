@@ -77,16 +77,18 @@ const Todo: React.FC<Props> = ({ dispatch, error, list, user }) => {
   }
 
   function handlePinList() {
-    dispatch(
-      doUpdateList(
-        Number(list.id),
-        {
-          pinned: list.pinned ? false : true,
-        },
-        user.email,
-        user.rawPass
+    if (list) {
+      dispatch(
+        doUpdateList(
+          Number(list.id),
+          {
+            pinned: list.pinned ? false : true,
+          },
+          user.email,
+          user.rawPass
+        )
       )
-    )
+    }
   }
 
   function handleDeleteItem(id: number, listId: number) {
@@ -127,6 +129,11 @@ const Todo: React.FC<Props> = ({ dispatch, error, list, user }) => {
       </IonHeader>
 
       <IonContent>
+        {error ? (
+          <IonItem>
+            <IonText color="danger">{error}</IonText>
+          </IonItem>
+        ) : null}
         {list ? (
           !Object.keys(list).includes("ListItems") || !list.ListItems.length ? (
             <IonNote className="ion-margin-start ion-margin-top">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { useHistory } from "react-router-dom"
 import {
   IonButtons,
@@ -16,6 +16,8 @@ import {
   IonLabel,
   IonNote,
   IonLoading,
+  IonText,
+  useIonViewDidEnter,
 } from "@ionic/react"
 import { heart, documentTextOutline, trash, createSharp } from "ionicons/icons"
 import { connect } from "react-redux"
@@ -25,11 +27,19 @@ type Props = {
   dispatch
   user
   pinned
+  loading
+  error
 }
 
-const Pinned: React.FC<Props> = ({ dispatch, user, pinned }) => {
+const Pinned: React.FC<Props> = ({
+  dispatch,
+  user,
+  pinned,
+  loading,
+  error,
+}) => {
   const history = useHistory()
-  useEffect(() => {
+  useIonViewDidEnter(() => {
     dispatch(doFetchPinned(user.email, user.rawPass))
   }, [])
 
@@ -48,6 +58,11 @@ const Pinned: React.FC<Props> = ({ dispatch, user, pinned }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
+        {error ? (
+          <IonItem>
+            <IonText color="danger">{error}</IonText>
+          </IonItem>
+        ) : null}
         {pinned.length ? (
           pinned.map((list) => (
             <IonItemSliding key={list.id}>
@@ -71,17 +86,14 @@ const Pinned: React.FC<Props> = ({ dispatch, user, pinned }) => {
               </IonItem>
             </IonItemSliding>
           ))
-        ) : (
+        ) : !error ? (
           <div className="ion-margin-top">
             <IonNote className="ion-margin-start">
               You do not have any pinned lists.
             </IonNote>
           </div>
-        )}
-        <IonLoading
-          message={"Working..."}
-          isOpen={!pinned.length ? true : false}
-        />
+        ) : null}
+        <IonLoading message={"Working..."} isOpen={loading} />
       </IonContent>
     </IonPage>
   )
@@ -90,6 +102,8 @@ const Pinned: React.FC<Props> = ({ dispatch, user, pinned }) => {
 const mapStateToProps = (state) => ({
   user: state.user.user,
   pinned: state.list.pinned,
+  loading: state.list.loading,
+  error: state.list.error,
 })
 
 export default connect(mapStateToProps)(Pinned)

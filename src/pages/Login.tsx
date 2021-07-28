@@ -16,7 +16,6 @@ import {
 } from "@ionic/react"
 
 import { connect } from "react-redux"
-
 import { doSignin } from "../actions/authActions"
 
 type Props = {

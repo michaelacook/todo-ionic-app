@@ -24,10 +24,10 @@ type Props = {
   dispatch
   user
   loading
+  error
 }
 
-const Account: React.FC<Props> = ({ dispatch, user, loading }) => {
-  const history = useHistory()
+const Account: React.FC<Props> = ({ dispatch, user, loading, error }) => {
   const [edit, setEdit] = useState(false)
   const [confirmDeleteAccount, setConfirmDeleteAccount] = useState(false)
   const [showModal, setShowModal] = useState(false)
@@ -94,6 +94,11 @@ const Account: React.FC<Props> = ({ dispatch, user, loading }) => {
       </IonHeader>
 
       <IonContent>
+        {error ? (
+          <IonItem>
+            <IonText color="danger">{error}</IonText>
+          </IonItem>
+        ) : null}
         <IonList>
           <IonItem>
             <IonLabel>First Name:</IonLabel>
@@ -220,6 +225,7 @@ const Account: React.FC<Props> = ({ dispatch, user, loading }) => {
 const mapStateToProps = (state) => ({
   user: state.user.user,
   loading: state.user.loading,
+  error: state.user.error,
 })
 
 export default connect(mapStateToProps)(Account)

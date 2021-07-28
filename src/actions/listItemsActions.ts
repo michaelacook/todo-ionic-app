@@ -1,17 +1,20 @@
 import { Action } from "../types"
 import { POST, PUT, DELETE, GET } from "../lib/http"
-
 import { doFetchList } from "./listActions"
+import { GENERAL_ERROR } from "../errors"
 
 export const FETCH_ITEM = "FETCH_ITEM"
 export const FETCH_ITEM_FAIL = "FETCH_ITEM_FAIL"
 export const FETCH_ITEM_SUCCESS = "FETCH_ITEM_SUCCESS"
+
 export const POST_ITEM = "POST_ITEM"
 export const POST_ITEM_FAIL = "POST_ITEM_FAIL"
 export const POST_ITEM_SUCCESS = "POST_ITEM_SUCCESS"
+
 export const UPDATE_ITEM = "UPDATE_ITEM"
 export const UPDATE_ITEM_FAIL = "UPDATE_ITEM_FAIL"
 export const UPDATE_ITEM_SUCCESS = "UPDATE_ITEM_SUCCESS"
+
 export const DELETE_ITEM = "DELETE_ITEM"
 export const DELETE_ITEM_FAIL = "DELETE_ITEM_FAIL"
 export const DELETE_ITEM_SUCCESS = "DELETE_ITEM_SUCCESS"
@@ -83,12 +86,12 @@ export function doFetchItem(id: number, emailAddress, password) {
       const resData = await response.json()
 
       if (response.status !== 200) {
-        dispatch(fetchItemFail(resData))
+        dispatch(fetchItemFail(GENERAL_ERROR))
       } else {
         dispatch(fetchItemSuccess(resData))
       }
     } catch (err) {
-      dispatch(fetchItemFail(err))
+      dispatch(fetchItemFail(GENERAL_ERROR))
     }
   }
 }
@@ -106,12 +109,12 @@ export function doPostListItem(id: number, payload, emailAddress, password) {
       const resData = await response.json()
 
       if (response.status !== 201) {
-        dispatch(postItemFail(resData))
+        dispatch(postItemFail(GENERAL_ERROR))
       } else {
         dispatch(doFetchList(id, emailAddress, password))
       }
     } catch (err) {
-      dispatch(postItemFail(err))
+      dispatch(postItemFail(GENERAL_ERROR))
     }
   }
 }
@@ -135,13 +138,13 @@ export function doUpdateItem(
       const resData = await response.json()
 
       if (response.status !== 200) {
-        dispatch(updateItemFail(resData))
+        dispatch(updateItemFail(GENERAL_ERROR))
       } else {
         dispatch(doFetchList(listId, emailAddress, password))
         dispatch(updateItemSuccess())
       }
     } catch (err) {
-      dispatch(updateItemFail(err))
+      dispatch(updateItemFail(GENERAL_ERROR))
     }
   }
 }
@@ -164,13 +167,13 @@ export function doDeleteItem(
       const resData = await response.json()
 
       if (response.status !== 200) {
-        dispatch(deleteItemFail(resData))
+        dispatch(deleteItemFail(GENERAL_ERROR))
       } else {
         dispatch(deleteItemSuccess())
         dispatch(doFetchList(listId, emailAddress, password))
       }
     } catch (err) {
-      dispatch(deleteItemFail(err))
+      dispatch(deleteItemFail(GENERAL_ERROR))
     }
   }
 }

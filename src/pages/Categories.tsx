@@ -19,6 +19,7 @@ import {
   IonItemOption,
   IonText,
   IonLoading,
+  useIonViewDidEnter,
 } from "@ionic/react"
 import {
   documentTextOutline,
@@ -59,7 +60,7 @@ const Categories: React.FC<Props> = ({
       : []
   )
 
-  useEffect(() => {
+  useIonViewDidEnter(() => {
     dispatch(doFetchCategories(user.email, user.rawPass))
   }, [])
 
@@ -95,10 +96,7 @@ const Categories: React.FC<Props> = ({
         <IonList>
           {error ? (
             <IonItem>
-              <IonText color="danger">
-                Couldn't fetch categories. Check your network connection and try
-                again.
-              </IonText>
+              <IonText color="danger">{error}</IonText>
             </IonItem>
           ) : null}
           {categories

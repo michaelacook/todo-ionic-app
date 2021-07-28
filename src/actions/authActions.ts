@@ -1,6 +1,6 @@
 import { Action, User } from "../types"
 import { GET, POST, PUT, DELETE } from "../lib/http"
-import API from "../api"
+import { GENERAL_ERROR } from "../errors"
 
 export const SIGN_IN = "SIGN_IN"
 export const SIGN_IN_SUCCESS = "SIGN_IN_SUCCESS"
@@ -117,7 +117,7 @@ export function doSignin(data: User, cache = false) {
       resData.rawPass = data.password
 
       if (response.status !== 200) {
-        dispatch(signinFail(resData))
+        dispatch(signinFail(GENERAL_ERROR))
       } else {
         dispatch(signinSuccess(resData))
 
@@ -126,7 +126,7 @@ export function doSignin(data: User, cache = false) {
         }
       }
     } catch (err) {
-      dispatch(signinFail(err))
+      dispatch(signinFail(GENERAL_ERROR))
     }
   }
 }
@@ -156,7 +156,7 @@ export function doUpdateAccount(
 
       const resData = await response.json()
       if (response.status !== 200) {
-        dispatch(updateAccountFail(resData))
+        dispatch(updateAccountFail(GENERAL_ERROR))
       } else {
         resData.rawPass = data.password
 
@@ -167,7 +167,7 @@ export function doUpdateAccount(
         dispatch(updateAccountSuccess(resData))
       }
     } catch (err) {
-      dispatch(updateAccountFail(err))
+      dispatch(updateAccountFail(GENERAL_ERROR))
     }
   }
 }
@@ -189,7 +189,7 @@ export function doDeleteAccount(
       dispatch(deleteAccountSuccess())
       dispatch(doSignout())
     } catch (err) {
-      dispatch(deleteAccountFail(err))
+      dispatch(deleteAccountFail(GENERAL_ERROR))
     }
   }
 }

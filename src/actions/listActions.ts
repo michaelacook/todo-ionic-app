@@ -1,6 +1,7 @@
 import { Action } from "../types"
 import { GET, POST, PUT, DELETE } from "../lib/http"
 import { doFetchCategories } from "./categoryActions"
+import { GENERAL_ERROR } from "../errors"
 
 export const FETCH_LIST = "FETCH_LIST"
 export const FETCH_LIST_FAIL = "FETCH_LIST_FAIL"
@@ -108,12 +109,12 @@ export function doFetchList(
       const resData = await response.json()
 
       if (response.status !== 200) {
-        dispatch(fetchListFail(resData))
+        dispatch(fetchListFail(GENERAL_ERROR))
       } else {
         dispatch(fetchListSuccess(resData))
       }
     } catch (err) {
-      dispatch(fetchListFail(err))
+      dispatch(fetchListFail(GENERAL_ERROR))
     }
   }
 }
@@ -129,7 +130,7 @@ export function doPostList(list, emailAddress: string, password: string) {
       }).then((response) => {
         if (response.status !== 201) {
           response.json().then((data) => {
-            dispatch(postListFail(data))
+            dispatch(postListFail(GENERAL_ERROR))
             reject(data)
           })
         } else {
@@ -157,13 +158,13 @@ export function doFetchPinned(emailAddress, password) {
       const resData = await response.json()
 
       if (response.status !== 200) {
-        dispatch(fetchPinnedFail(resData))
+        dispatch(fetchPinnedFail(GENERAL_ERROR))
       } else {
         dispatch(doFetchCategories(emailAddress, password))
         dispatch(fetchPinnedSuccess(resData))
       }
     } catch (err) {
-      dispatch(fetchPinnedFail(err))
+      dispatch(fetchPinnedFail(GENERAL_ERROR))
     }
   }
 }
@@ -179,16 +180,15 @@ export function doUpdateList(id: number, payload, emailAddress, password) {
       })
 
       const resData = await response.json()
-      console.log(resData)
 
       if (response.status !== 200) {
-        dispatch(updateListFail(resData))
+        dispatch(updateListFail(GENERAL_ERROR))
       } else {
         dispatch(doFetchList(id, emailAddress, password))
         dispatch(doFetchPinned(emailAddress, password))
       }
     } catch (err) {
-      dispatch(updateListFail(err))
+      dispatch(updateListFail(GENERAL_ERROR))
     }
   }
 }
@@ -210,7 +210,7 @@ export function doDeleteList(
       dispatch(doFetchCategories(emailAddress, password))
       dispatch(deleteListSuccess())
     } catch (err) {
-      dispatch(deleteListFail(err))
+      dispatch(deleteListFail(GENERAL_ERROR))
     }
   }
 }

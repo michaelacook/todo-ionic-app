@@ -1,5 +1,6 @@
 import { Action } from "../types"
 import { GET, POST, PUT, DELETE } from "../lib/http"
+import { GENERAL_ERROR } from "../errors"
 
 export const FETCH_CATEGORIES = "FETCH_CATEGORIES"
 export const FETCH_CATEGORIES_FAIL = "FETCH_CATEGORIES_FAIL"
@@ -78,12 +79,12 @@ export function doFetchCategories(emailAddress: string, password: string) {
       const resData = await response.json()
 
       if (response.status !== 200) {
-        dispatch(fetchCategoriesFail(resData))
+        dispatch(fetchCategoriesFail(GENERAL_ERROR))
       } else {
         dispatch(fetchCategoriesSuccess(resData))
       }
     } catch (err) {
-      dispatch(fetchCategoriesFail(err))
+      dispatch(fetchCategoriesFail(GENERAL_ERROR))
     }
   }
 }
@@ -105,13 +106,13 @@ export function doPostCategory(
       const resData = await response.json()
 
       if (response.status !== 201) {
-        dispatch(postCategoryFail(resData))
+        dispatch(postCategoryFail(GENERAL_ERROR))
       } else {
         dispatch(doFetchCategories(emailAddress, password))
         dispatch(postCategorySuccess())
       }
     } catch (err) {
-      dispatch(postCategoryFail(err))
+      dispatch(postCategoryFail(GENERAL_ERROR))
     }
   }
 }
@@ -134,13 +135,13 @@ export function doUpdateCategory(
       const resData = await response.json()
 
       if (response.status !== 200) {
-        dispatch(putCategoryFail(resData))
+        dispatch(putCategoryFail(GENERAL_ERROR))
       } else {
         dispatch(doFetchCategories(emailAddress, password))
         dispatch(putCategorySuccess())
       }
     } catch (err) {
-      dispatch(putCategoryFail(err))
+      dispatch(putCategoryFail(GENERAL_ERROR))
     }
   }
 }
@@ -161,7 +162,7 @@ export function doDeleteCategory(
 
       dispatch(doFetchCategories(emailAddress, password))
     } catch (err) {
-      dispatch(deleteCategoryFail(err))
+      dispatch(deleteCategoryFail(GENERAL_ERROR))
     }
   }
 }
