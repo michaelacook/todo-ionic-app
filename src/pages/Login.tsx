@@ -14,7 +14,6 @@ import {
   IonRouterLink,
   IonLoading,
 } from "@ionic/react"
-
 import { connect } from "react-redux"
 import { doSignin } from "../actions/authActions"
 
@@ -76,6 +75,11 @@ const Login: React.FC<Props> = ({ dispatch, user, loading, error }) => {
       </IonHeader>
 
       <IonContent className="ion-padding">
+        {error ? (
+          <IonItem>
+            <IonText color="danger">{error}</IonText>
+          </IonItem>
+        ) : null}
         <IonList>
           <IonItem>
             <IonInput
